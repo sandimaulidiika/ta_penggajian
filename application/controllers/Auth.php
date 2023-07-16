@@ -33,9 +33,11 @@ class Auth extends CI_Controller
             // cek password dan level
             if (password_verify($password, $user['password'])) {
                 $data = [
-                    'username' => $user['username']
+                    'UserID' => $user['id'],
+                    'username' => $user['username'],
+                    'level' => $user['level']
                 ];
-                $this->session->set_userdata('login_session', $data);
+                $this->session->set_userdata($data);
                 redirect('dashboard');
             } else {
                 // jika password salah

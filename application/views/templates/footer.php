@@ -8,7 +8,7 @@
 <footer class="sticky-footer bg-white">
     <div class="container my-auto">
         <div class="copyright text-center my-auto">
-            <span>Copyright &copy; PT. Gelumbang Agro Sentosa 2023</span>
+            <span>Copyright SB Admin 2 &copy; PT. Gelumbang Agro Sentosa 2023</span>
         </div>
     </div>
 </footer>
@@ -45,22 +45,50 @@
 </div>
 
 <!-- Bootstrap core JavaScript-->
-<script src="<?php echo 'assets/' ?>vendor/jquery/jquery.min.js"></script>
-<script src="<?php echo 'assets/' ?>vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="<?= base_url('assets/') ?>vendor/jquery/jquery.min.js"></script>
+<script src="<?= base_url('assets/') ?>vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
 <!-- Core plugin JavaScript-->
-<script src="<?php echo 'assets/' ?>vendor/jquery-easing/jquery.easing.min.js"></script>
+<script src="<?= base_url('assets/') ?>vendor/jquery-easing/jquery.easing.min.js"></script>
 
 <!-- Custom scripts for all pages-->
-<script src="<?php echo 'assets/' ?>js/sb-admin-2.min.js"></script>
+<script src="<?= base_url('assets/') ?>js/sb-admin-2.min.js"></script>
 
-<!-- Page level plugins -->
-<script src="<?php echo 'assets/' ?>vendor/chart.js/Chart.min.js"></script>
+<!-- data tabel -->
+<script src="<?= base_url('assets/') ?>vendor/datatables/jquery.dataTables.min.js"></script>
+<script src="<?= base_url('assets/') ?>vendor/datatables/dataTables.bootstrap4.min.js"></script>
+<script src="<?= base_url('assets/') ?>js/demo/datatables-demo.js"></script>
 
-<!-- Page level custom scripts -->
-<script src="<?php echo 'assets/' ?>js/demo/chart-area-demo.js"></script>
-<script src="<?php echo 'assets/' ?>js/demo/chart-pie-demo.js"></script>
+<script>
+    /* Rupiah Edit*/
+    var tanpa_rupiah = document.getElementById('rupiah-edit');
+    tanpa_rupiah.addEventListener('keyup', function(e) {
+        tanpa_rupiah.value = formatRupiah(this.value);
+    });
 
+    /* Rupiah */
+    var dengan_rupiah = document.getElementById('rupiah');
+    dengan_rupiah.addEventListener('keyup', function(e) {
+        dengan_rupiah.value = formatRupiah(this.value, 'Rp. ');
+    });
+
+    /* Fungsi */
+    function formatRupiah(angka, prefix) {
+        var number_string = angka.replace(/[^,\d]/g, '').toString(),
+            split = number_string.split(','),
+            sisa = split[0].length % 3,
+            rupiah = split[0].substr(0, sisa),
+            ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+        if (ribuan) {
+            separator = sisa ? '.' : '';
+            rupiah += separator + ribuan.join('.');
+        }
+
+        rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+        return prefix == undefined ? rupiah : (rupiah ? 'Rp. ' + rupiah : '');
+    }
+</script>
 </body>
 
 </html>

@@ -20,20 +20,30 @@
                     <thead>
                         <tr>
                             <th>No</th>
-                            <th>Nama Divisi</th>
-                            <th>Ketua Divisi</th>
-                            <th>Deskripsi</th>
+                            <th>NIP</th>
+                            <th>Nama</th>
+                            <th>Jenis Kelamin</th>
+                            <th>Jabatan</th>
+                            <th>Divisi</th>
+                            <th>Status</th>
+                            <th>Agama</th>
+                            <th>Tgl Masuk</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php $no = 1; ?>
-                        <?php foreach ($divisi as $key) : ?>
+                        <?php foreach ($pegawai as $key) : ?>
                             <tr>
                                 <td><?= $no++ ?></td>
+                                <td><?= $key['nip'] ?></td>
+                                <td><?= $key['nama'] ?></td>
+                                <td><?= $key['jk_pegawai'] ?></td>
+                                <td><?= $key['nama_jabatan'] ?></td>
                                 <td><?= $key['nama_divisi'] ?></td>
-                                <td><?= $key['ketua_divisi'] ?></td>
-                                <td><?= $key['deskripsi'] ?></td>
+                                <td><?= $key['status'] ?></td>
+                                <td><?= $key['agama'] ?></td>
+                                <td><?= $key['tgl_masuk'] ?></td>
                                 <?php if (is_admin()) : ?>
                                     <td>
                                         <button class="btn btn-primary" data-toggle="modal" data-target="#editModal<?= $key['id'] ?>">
@@ -55,7 +65,7 @@
     </div>
 
     <!-- edit modal -->
-    <?php foreach ($divisi as $key) : ?>
+    <?php foreach ($pegawai as $key) : ?>
         <div class="modal fade" id="editModal<?= $key['id'] ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
@@ -65,7 +75,7 @@
                             <span aria-hidden="true">×</span>
                         </button>
                     </div>
-                    <form action="<?= site_url('divisi/edit/') ?>" method="POST">
+                    <form action="<?= site_url('pegawai/edit/') ?>" method="POST">
                         <div class="modal-body">
                             <input type="hidden" name="id" value="<?= $key['id'] ?>">
                             <div class="form-group">
@@ -92,7 +102,7 @@
     <?php endforeach ?>
 
     <!-- delete Modal-->
-    <?php foreach ($divisi as $key) : ?>
+    <?php foreach ($pegawai as $key) : ?>
         <div class="modal fade" id="deleteModal<?= $key['id'] ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
@@ -105,7 +115,7 @@
                     <div class="modal-body">Yakin ingin menghapus <?= $title ?> <b><?= $key['nama_divisi'] ?></b></div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
-                        <button onclick="window.location='<?= site_url('divisi/delete/' . $key['id']) ?>'" class="btn btn-danger">Iya, saya yakin</button>
+                        <button onclick="window.location='<?= site_url('pegawai/delete/' . $key['id']) ?>'" class="btn btn-danger">Iya, saya yakin</button>
                     </div>
                 </div>
             </div>

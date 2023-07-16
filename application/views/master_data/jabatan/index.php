@@ -4,7 +4,7 @@
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800"><?= $title ?></h1>
-        <button onclick="window.location='<?= site_url('divisi/add') ?>'" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+        <button onclick="window.location='<?= site_url('jabatan/add') ?>'" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
             <i class="fa-solid fa-plus text-white-50"></i> Tambah Data
         </button>
     </div>
@@ -20,20 +20,22 @@
                     <thead>
                         <tr>
                             <th>No</th>
-                            <th>Nama Divisi</th>
-                            <th>Ketua Divisi</th>
-                            <th>Deskripsi</th>
+                            <th>Nama jabatan</th>
+                            <th>Gaji Pokok</th>
+                            <th>Tunjangan</th>
+                            <th>Lembur</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php $no = 1; ?>
-                        <?php foreach ($divisi as $key) : ?>
+                        <?php foreach ($jabatan as $key) : ?>
                             <tr>
                                 <td><?= $no++ ?></td>
-                                <td><?= $key['nama_divisi'] ?></td>
-                                <td><?= $key['ketua_divisi'] ?></td>
-                                <td><?= $key['deskripsi'] ?></td>
+                                <td><?= $key['nama_jabatan'] ?></td>
+                                <td>Rp. <?= number_format($key['gaji_pokok']); ?></td>
+                                <td>Rp. <?= number_format($key['tunjangan']); ?></td>
+                                <td>Rp. <?= number_format($key['lembur']); ?></td>
                                 <?php if (is_admin()) : ?>
                                     <td>
                                         <button class="btn btn-primary" data-toggle="modal" data-target="#editModal<?= $key['id'] ?>">
@@ -55,7 +57,7 @@
     </div>
 
     <!-- edit modal -->
-    <?php foreach ($divisi as $key) : ?>
+    <?php foreach ($jabatan as $key) : ?>
         <div class="modal fade" id="editModal<?= $key['id'] ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
@@ -65,20 +67,24 @@
                             <span aria-hidden="true">×</span>
                         </button>
                     </div>
-                    <form action="<?= site_url('divisi/edit/') ?>" method="POST">
+                    <form action="<?= site_url('jabatan/edit/') ?>" method="POST">
                         <div class="modal-body">
                             <input type="hidden" name="id" value="<?= $key['id'] ?>">
                             <div class="form-group">
-                                <label for="nama">Nama Divisi</label>
-                                <input type="text" class="form-control" name="divisi" id="divisi" placeholder="Enter nama divisi" value="<?= $key['nama_divisi'] ?>" required>
+                                <label for="nama">Nama jabatan</label>
+                                <input type="text" class="form-control" name="jabatan" id="jabatan" placeholder="Enter nama jabatan" value="<?= $key['nama_jabatan'] ?>" required>
                             </div>
                             <div class="form-group">
-                                <label for="nama">Ketua Divisi</label>
-                                <input type="text" class="form-control" name="ketua" id="ketua" placeholder="Enter ketua divisi" value="<?= $key['ketua_divisi'] ?>" required>
+                                <label for="nama">Gaji Pokok</label>
+                                <input type="text" class="form-control" name="pokok" id="pokok" placeholder="Enter gaji pokok" value="<?= $key['gaji_pokok'] ?>" required>
                             </div>
                             <div class="form-group">
-                                <label for="nama">Deskripsi (Opsional)</label>
-                                <input type="text" class="form-control" name="deskripsi" placeholder="Enter deskripsi" value="<?= $key['deskripsi'] ?>">
+                                <label for="nama">Tunjangan</label>
+                                <input type="text" class="form-control" name="tunjangan" id="tunjangan" placeholder="Enter tunjangan" value="<?= $key['tunjangan'] ?>" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="nama">Lembur</label>
+                                <input type="text" class="form-control" name="lembur" id="lembur" placeholder="Enter lembur" value="<?= $key['lembur'] ?>" required>
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -92,7 +98,7 @@
     <?php endforeach ?>
 
     <!-- delete Modal-->
-    <?php foreach ($divisi as $key) : ?>
+    <?php foreach ($jabatan as $key) : ?>
         <div class="modal fade" id="deleteModal<?= $key['id'] ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
@@ -102,10 +108,10 @@
                             <span aria-hidden="true">×</span>
                         </button>
                     </div>
-                    <div class="modal-body">Yakin ingin menghapus <?= $title ?> <b><?= $key['nama_divisi'] ?></b></div>
+                    <div class="modal-body">Yakin ingin menghapus <?= $title ?> <b><?= $key['nama_jabatan'] ?></b></div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
-                        <button onclick="window.location='<?= site_url('divisi/delete/' . $key['id']) ?>'" class="btn btn-danger">Iya, saya yakin</button>
+                        <button onclick="window.location='<?= site_url('jabatan/delete/' . $key['id']) ?>'" class="btn btn-danger">Iya, saya yakin</button>
                     </div>
                 </div>
             </div>

@@ -4,10 +4,12 @@
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800"><?= $title; ?></h1>
-        <button onclick="window.location='<?= site_url('master/pengguna/tambah') ?>'" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+        <button onclick="window.location='<?= site_url('pengguna/add') ?>'" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
             <i class="fa-solid fa-plus text-white-50"></i> Tambah Data
         </button>
     </div>
+
+    <?= $this->session->flashdata('message'); ?>
 
     <!-- Content Row -->
     <div class="card shadow mb-4">
@@ -39,8 +41,8 @@
                                     <td><?= $key['level'] ?></td>
                                 <?php endif ?>
                                 <td>
-                                    <button class="btn btn-primary" onclick="window.location='<?= site_url('master/pengguna/edit/' . $key['id']) ?>'">
-                                        <i class="fas fa-edit"></i> Edit
+                                    <button class="btn btn-primary" data-toggle="modal" data-target="#editModal<?= $key['id'] ?>">
+                                        <i class=" fas fa-edit"></i> Edit
                                     </button>
                                     <button class="btn btn-danger" data-toggle="modal" data-target="#deleteModal<?= $key['id'] ?>">
                                         <i class="fas fa-trash-alt"></i> Delete
@@ -54,7 +56,58 @@
         </div>
     </div>
 
-    <!-- Logout Modal-->
+    <!-- edit modal -->
+    <?php foreach ($pengguna as $key) : ?>
+        <div class="modal fade" id="editModal<?= $key['id'] ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Edit Pengguna</h5>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <form action="<?= site_url('pengguna/edit/') ?>" method="POST">
+                        <div class="modal-body">
+                            <input type="hidden" name="id" value="<?= $key['id'] ?>">
+                            <div class="form-group">
+                                <label for="nama">Nama Lengkap</label>
+                                <input type="text" class="form-control" name="nama" id="nama" placeholder="Enter nama lengkap" autocomplete="nama" value="<?= $key['nama_lengkap'] ?>" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="username">Username</label>
+                                <input type="text" class="form-control" name="username" id="username" placeholder="Enter username" autocomplete="name" value="<?= $key['username'] ?>" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="level">Level</label>
+                                <select class="form-control" id="level" name="level" aria-label="Default select example">
+                                    <option value="admin" <?php if ($key['level'] == "admin") echo "selected"; ?>>Admin Payroll</option>
+                                    <option value="hrd" <?php if ($key['level'] == "hrd") echo "selected"; ?>>HRD</option>
+                                    <option value="ktu" <?php if ($key['level'] == "ktu") echo "selected"; ?>>KTU</option>
+                                </select>
+
+                            </div>
+                            <div class="form-group">
+                                <label for="password">Password</label>
+                                <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+                                <p class="text-danger"><i>Kosongkan jika tidak ubah password</i></p>
+                            </div>
+                            <div class="form-group">
+                                <label for="password">Ulangi Password</label>
+                                <input type="password" class="form-control" id="password2" name="password2" placeholder="Konfirmasi Password">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Simpan</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    <?php endforeach ?>
+
+    <!-- delete Modal-->
     <?php foreach ($pengguna as $key) : ?>
         <?php if ($key['id'] == 1) : ?>
             <div class="modal fade" id="deleteModal<?= $key['id'] ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -86,7 +139,7 @@
                         <div class="modal-body">Yakin ingin menghapus pengguna <b><?= $key['nama_lengkap'] ?></b></div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-danger">Yes, i am sure</button>
+                            <button onclick="window.location='<?= site_url('pengguna/userdelete/' . $key['id']) ?>'" class="btn btn-danger">Iya, saya yakin</button>
                         </div>
                     </div>
                 </div>
