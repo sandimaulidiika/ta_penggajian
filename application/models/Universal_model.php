@@ -32,8 +32,8 @@ class Universal_model extends CI_Model
     {
         $this->db->select('*');
         $this->db->from('pegawai');
-        $this->db->join('jabatan', 'pegawai.id_jabatan = jabatan.id', 'LEFT');
-        $this->db->join('divisi', 'pegawai.id_divisi = divisi.id', 'LEFT');
+        $this->db->join('jabatan', 'pegawai.id_jabatan = jabatan.id');
+        $this->db->join('divisi', 'pegawai.id_divisi = divisi.id');
         $query = $this->db->get();
 
         return $query->result_array();

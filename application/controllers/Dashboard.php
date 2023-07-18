@@ -13,6 +13,12 @@ class Dashboard extends CI_Controller
     {
         $data['user'] = $this->db->get_where('user', ['id' => $this->session->userdata('UserID')])->row_array();
         $data['title'] = 'Dashboard';
+
+        $data['total_pegawai'] = $this->db->query('select * from pegawai')->num_rows();
+        $data['total_user'] = $this->db->query('select * from user')->num_rows();
+        $data['total_jabatan'] = $this->db->query('select * from jabatan')->num_rows();
+        $data['total_divisi'] = $this->db->query('select * from divisi')->num_rows();
+
         $this->load->view('templates/header', $data);
         $this->load->view('templates/sidebar', $data);
         $this->load->view('templates/topbar', $data);
