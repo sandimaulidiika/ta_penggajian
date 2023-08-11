@@ -30,10 +30,9 @@
                     <div class="form-group">
                         <label for="level">Level</label>
                         <select class="form-control" id="level" name="level" aria-label="Default select example">
-                            <option selected>Pilih Level</option>
+                            <option selected disabled>Pilih Level</option>
                             <option value="admin">Admin Payroll</option>
-                            <option value="hrd">HRD</option>
-                            <option value="ktu">KTU</option>
+                            <option value="pimpinan">Pimpinan</option>
                         </select>
                         <?= form_error('level', '<small class="text-danger pl-3">', '</small>'); ?>
                     </div>

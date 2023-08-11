@@ -36,10 +36,10 @@
                                 <td><?= $key['deskripsi'] ?></td>
                                 <?php if (is_admin()) : ?>
                                     <td>
-                                        <button class="btn btn-primary" data-toggle="modal" data-target="#editModal<?= $key['id'] ?>">
+                                        <button class="btn btn-primary" data-toggle="modal" data-target="#editModal<?= $key['id_divisi'] ?>">
                                             <i class="fas fa-edit"></i> Edit
                                         </button>
-                                        <button class="btn btn-danger" data-toggle="modal" data-target="#deleteModal<?= $key['id'] ?>">
+                                        <button class="btn btn-danger" data-toggle="modal" data-target="#deleteModal<?= $key['id_divisi'] ?>">
                                             <i class="fas fa-trash-alt"></i> Delete
                                         </button>
                                     </td>
@@ -56,7 +56,7 @@
 
     <!-- edit modal -->
     <?php foreach ($divisi as $key) : ?>
-        <div class="modal fade" id="editModal<?= $key['id'] ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="editModal<?= $key['id_divisi'] ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -67,7 +67,7 @@
                     </div>
                     <form action="<?= site_url('divisi/edit/') ?>" method="POST">
                         <div class="modal-body">
-                            <input type="hidden" name="id" value="<?= $key['id'] ?>">
+                            <input type="hidden" name="id_divisi" value="<?= $key['id_divisi'] ?>">
                             <div class="form-group">
                                 <label for="nama">Nama Divisi</label>
                                 <input type="text" class="form-control" name="divisi" id="divisi" placeholder="Enter nama divisi" value="<?= $key['nama_divisi'] ?>" required>
@@ -93,7 +93,7 @@
 
     <!-- delete Modal-->
     <?php foreach ($divisi as $key) : ?>
-        <div class="modal fade" id="deleteModal<?= $key['id'] ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="deleteModal<?= $key['id_divisi'] ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -105,7 +105,7 @@
                     <div class="modal-body">Yakin ingin menghapus <?= $title ?> <b><?= $key['nama_divisi'] ?></b></div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
-                        <button onclick="window.location='<?= site_url('divisi/delete/' . $key['id']) ?>'" class="btn btn-danger">Iya, saya yakin</button>
+                        <button onclick="window.location='<?= site_url('divisi/delete/' . $key['id_divisi']) ?>'" class="btn btn-danger">Iya, saya yakin</button>
                     </div>
                 </div>
             </div>

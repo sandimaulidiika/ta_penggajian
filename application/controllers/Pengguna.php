@@ -14,7 +14,7 @@ class Pengguna extends CI_Controller
 
     public function index()
     {
-        $data['user'] = $this->db->get_where('user', ['id' => $this->session->userdata('UserID')])->row_array();
+        $data['user'] = $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array();
         $data['title'] = 'Data Pengguna';
         $data['pengguna'] = $this->db->get('user')->result_array();
         $this->load->view('templates/header', $data);
@@ -26,7 +26,7 @@ class Pengguna extends CI_Controller
 
     public function add()
     {
-        $data['user'] = $this->db->get_where('user', ['id' => $this->session->userdata('UserID')])->row_array();
+        $data['user'] = $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array();
         $data['title'] = 'Tambah Pengguna';
 
         $this->form_validation->set_rules('nama', 'Nama', 'trim|required', [
@@ -35,7 +35,7 @@ class Pengguna extends CI_Controller
         $this->form_validation->set_rules('username', 'Username', 'trim|required', [
             'required' => 'Username tidak boleh kosong!'
         ]);
-        $this->form_validation->set_rules('password', 'Password', 'required|trim|min_length[4]', [
+        $this->form_validation->set_rules('password', 'Password', 'required|trim|min_length[3]', [
             'required' => 'Password tidak boleh kosong!',
             'min_length' => 'Password terlalu pendek!'
         ]);
@@ -59,6 +59,7 @@ class Pengguna extends CI_Controller
                 'username' => $username,
                 'password' => password_hash($this->input->post('password', true), PASSWORD_DEFAULT),
                 'level' => $level,
+                'foto_user' => 'default.svg'
             ];
 
             // jika validasi lolos
@@ -70,7 +71,7 @@ class Pengguna extends CI_Controller
 
     public function edit()
     {
-        $id = $this->input->post('id');
+        $id = $this->input->post('id_user');
 
         $data = [
             'nama_lengkap' => $this->input->post('nama'),
@@ -86,7 +87,7 @@ class Pengguna extends CI_Controller
             $data['password'] = password_hash($password, PASSWORD_DEFAULT);
         }
 
-        $this->db->where('id', $id);
+        $this->db->where('id_user', $id);
         $this->db->update('user', $data);
         set_pesan('Data berhasil diubah!');
         redirect('pengguna');
@@ -94,7 +95,7 @@ class Pengguna extends CI_Controller
 
     public function userdelete($id)
     {
-        $where = array('id' => $id);
+        $where = array('id_user' => $id);
         $this->db->delete('user', $where);
         set_pesan('delete data berhasil!');
         redirect('pengguna');

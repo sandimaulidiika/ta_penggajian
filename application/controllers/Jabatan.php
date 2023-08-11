@@ -12,7 +12,7 @@ class Jabatan extends CI_Controller
 
     public function index()
     {
-        $data['user'] = $this->db->get_where('user', ['id' => $this->session->userdata('UserID')])->row_array();
+        $data['user'] = $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array();
         $data['title'] = 'Data Jabatan';
         $data['jabatan'] = $this->universal->get('jabatan');
 
@@ -25,7 +25,7 @@ class Jabatan extends CI_Controller
 
     public function add()
     {
-        $data['user'] = $this->db->get_where('user', ['id' => $this->session->userdata('UserID')])->row_array();
+        $data['user'] = $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array();
         $data['title'] = 'Tambah Jabatan';
 
         $this->form_validation->set_rules('jabatan', 'Nama Jabatan', 'trim|required', [
@@ -64,7 +64,7 @@ class Jabatan extends CI_Controller
 
     public function edit()
     {
-        $id = $this->input->post('id');
+        $id = $this->input->post('id_jabatan');
 
         $data = [
             'nama_jabatan' => $this->input->post('jabatan'),
@@ -73,14 +73,14 @@ class Jabatan extends CI_Controller
             'lembur' => $this->input->post('lembur'),
         ];
 
-        $this->universal->update('jabatan', 'id', $id, $data);
+        $this->universal->update('jabatan', 'id_jabatan', $id, $data);
         set_pesan('Data berhasil diubah!');
         redirect('jabatan');
     }
 
     public function delete($id)
     {
-        $where = array('id' => $id);
+        $where = array('id_jabatan' => $id);
         $this->db->delete('jabatan', $where);
         set_pesan('delete data berhasil!');
         redirect('jabatan');

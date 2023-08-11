@@ -33,7 +33,7 @@ class Auth extends CI_Controller
             // cek password dan level
             if (password_verify($password, $user['password'])) {
                 $data = [
-                    'UserID' => $user['id'],
+                    'UserID' => $user['id_user'],
                     'username' => $user['username'],
                     'level' => $user['level']
                 ];

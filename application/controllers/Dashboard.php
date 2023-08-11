@@ -11,7 +11,7 @@ class Dashboard extends CI_Controller
 
     public function index()
     {
-        $data['user'] = $this->db->get_where('user', ['id' => $this->session->userdata('UserID')])->row_array();
+        $data['user'] = $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array();
         $data['title'] = 'Dashboard';
 
         $data['total_pegawai'] = $this->db->query('select * from pegawai')->num_rows();

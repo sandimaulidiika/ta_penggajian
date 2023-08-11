@@ -47,6 +47,15 @@
                                 <input type="text" class="form-control" name="agama" id="agama" placeholder="Enter agama" value="<?= set_value('agama') ?>" required>
                                 <?= form_error('agama', '<small class="text-danger pl-3">', '</small>'); ?>
                             </div>
+                            <div class="form-group">
+                                <label for="nama">User <i>(Opsional)</i></label>
+                                <select class="form-control" id="user" name="user" aria-label="Default select example">
+                                    <option selected disabled>Pilih user</option>
+                                    <?php foreach ($users as $j) : ?>
+                                        <option value="<?= $j['id_user']; ?>"><?= $j['username']; ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
                         </div>
                         <div class="col-6">
                             <div class="form-group">
@@ -54,7 +63,7 @@
                                 <select class="form-control" id="jabatan" name="jabatan" aria-label="Default select example">
                                     <option selected disabled>Pilih jabatan</option>
                                     <?php foreach ($jabatan as $key) : ?>
-                                        <option value="<?= $key['id'] ?>"><?= $key['nama_jabatan'] ?></option>
+                                        <option value="<?= $key['id_jabatan'] ?>"><?= $key['nama_jabatan'] ?></option>
                                     <?php endforeach ?>
                                 </select>
                                 <?= form_error('jabatan', '<small class="text-danger pl-3">', '</small>'); ?>
@@ -64,7 +73,7 @@
                                 <select class="form-control" id="divisi" name="divisi" aria-label="Default select example">
                                     <option selected disabled>Pilih divisi</option>
                                     <?php foreach ($divisi as $key) : ?>
-                                        <option value="<?= $key['id'] ?>"><?= $key['nama_divisi'] ?></option>
+                                        <option value="<?= $key['id_divisi'] ?>"><?= $key['nama_divisi'] ?></option>
                                     <?php endforeach ?>
                                 </select>
                                 <?= form_error('divisi', '<small class="text-danger pl-3">', '</small>'); ?>
@@ -81,6 +90,11 @@
                                     <option value="Belum Kawin">Belum Kawin</option>
                                 </select>
                                 <?= form_error('status', '<small class="text-danger pl-3">', '</small>'); ?>
+                            </div>
+                            <div class="form-group">
+                                <label for="nama">Alamat</label>
+                                <input type="text" class="form-control" name="alamat" id="alamat" placeholder="Enter alamat" value="<?= set_value('alamat') ?>" required>
+                                <?= form_error('alamat', '<small class="text-danger pl-3">', '</small>'); ?>
                             </div>
                         </div>
                     </div>

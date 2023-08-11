@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title><?php echo $title; ?></title>
+    <title><?php echo $title; ?> - Aplikasi Pengelolaan Penggajian Pegawai</title>
 
     <!-- Custom fonts for this template-->
     <link href="<?php echo 'assets/' ?>vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -36,7 +36,7 @@
                             <div class="col">
                                 <div class="p-5">
                                     <div class="text-center">
-                                        <h1 class="h3 text-gray-900 mb-2">Penggajian Pegawai</h1>
+                                        <h1 class="h3 text-gray-900 mb-2">Pengelolaan Penggajian Pegawai</h1>
                                         <p class="mb-0">PT. Gelumbang Agro Sentosa</p>
                                         <img src="https://perusahaan.net/foto/1039548/logo-pt-gelumbang-agro-sentosa.jpg" alt="" class="mb-2">
                                     </div>
@@ -51,7 +51,7 @@
                                             <?= form_error('password', '<small class="text-danger" pl-3>', '</small>'); ?>
                                         </div>
                                         <button type="submit" class="btn btn-primary btn-user btn-block">
-                                            Login
+                                            Masuk
                                         </button>
                                     </form>
                                 </div>

@@ -4,7 +4,7 @@
     <!-- Sidebar - Brand -->
     <a class="sidebar-brand d-flex align-items-center justify-content-center" href="<?= base_url('') ?>">
         <div class="sidebar-brand-icon rotate-n-15">
-            <i class="fas fa-laugh-wink"></i>
+            <img src="<?= base_url('assets/img/logo_ptgas.png') ?>" height=70px" alt="">
         </div>
         <div class="sidebar-brand-text mx-3">PT. GAS</div>
     </a>
@@ -45,18 +45,18 @@
         </div>
     </li>
 
-    <!-- Nav Item - Utilities Collapse Menu -->
+    <!-- Nav Item - Transaksi -->
     <?php if (is_admin()) : ?>
-        <li class="nav-item">
+        <li class="nav-item <?= ($this->uri->segment(2) == 'absensi' || $this->uri->segment(2) == 'lembur' || $this->uri->segment(2) == 'gaji') ? 'active' : '' ?>">
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
                 <i class="fa-solid fa-receipt"></i>
                 <span>Transaksi</span>
             </a>
-            <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+            <div id="collapseUtilities" class="collapse <?= ($this->uri->segment(2) == 'absensi' || $this->uri->segment(2) == 'lembur' || $this->uri->segment(2) == 'gaji') ? 'show' : '' ?>" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
-                    <a class="collapse-item" href="<?= site_url('') ?>">Kelola Absen</a>
-                    <a class="collapse-item" href="<?= site_url('') ?>">Kelola Lembur</a>
-                    <a class="collapse-item" href="<?= site_url('') ?>">Kelola Gaji</a>
+                    <a class="collapse-item <?= ($this->uri->segment(2) == 'absensi') ? 'active' : '' ?>" href="<?= site_url('transaksi/absensi') ?>">Kelola Abseni</a>
+                    <a class="collapse-item <?= ($this->uri->segment(2) == 'lembur') ? 'active' : '' ?>" href="<?= site_url('transaksi/lembur') ?>">Kelola Lembur</a>
+                    <a class="collapse-item <?= ($this->uri->segment(2) == 'gaji') ? 'active' : '' ?>" href="<?= site_url('transaksi/gaji') ?>">Kelola Gaji</a>
                 </div>
             </div>
         </li>
@@ -90,7 +90,7 @@
     <li class="nav-item">
         <a class="nav-link" href="<?= base_url('auth/logout') ?>">
             <i class="fa-solid fa-right-from-bracket"></i>
-            <span>Logout</span>
+            <span>Keluar</span>
         </a>
     </li>
 

@@ -12,7 +12,7 @@ class Divisi extends CI_Controller
 
     public function index()
     {
-        $data['user'] = $this->db->get_where('user', ['id' => $this->session->userdata('UserID')])->row_array();
+        $data['user'] = $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array();
         $data['title'] = 'Data Divisi';
         $data['divisi'] = $this->db->get('divisi')->result_array();
 
@@ -25,7 +25,7 @@ class Divisi extends CI_Controller
 
     public function add()
     {
-        $data['user'] = $this->db->get_where('user', ['id' => $this->session->userdata('UserID')])->row_array();
+        $data['user'] = $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array();
         $data['title'] = 'Tambah Divisi';
         $data['divisi'] = $this->db->get('divisi')->result_array();
 
@@ -57,7 +57,7 @@ class Divisi extends CI_Controller
 
     public function edit()
     {
-        $id = $this->input->post('id');
+        $id = $this->input->post('id_divisi');
 
         $data = [
             'nama_divisi' => $this->input->post('divisi'),
@@ -65,14 +65,14 @@ class Divisi extends CI_Controller
             'deskripsi' => $this->input->post('deskripsi'),
         ];
 
-        $this->universal->update('divisi', 'id', $id, $data);
+        $this->universal->update('divisi', 'id_divisi', $id, $data);
         set_pesan('Data berhasil diubah!');
         redirect('divisi');
     }
 
     public function delete($id)
     {
-        $where = array('id' => $id);
+        $where = array('id_divisi' => $id);
         $this->db->delete('divisi', $where);
         set_pesan('delete data berhasil!');
         redirect('divisi');

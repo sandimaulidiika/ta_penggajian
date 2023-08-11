@@ -8,7 +8,7 @@
 <footer class="sticky-footer bg-white">
     <div class="container my-auto">
         <div class="copyright text-center my-auto">
-            <span>Copyright SB Admin 2 &copy; PT. Gelumbang Agro Sentosa 2023</span>
+            <span>Hak Cipta SB Admin 2 &copy; PT. Gelumbang Agro Sentosa <?= date('Y') ?></span>
         </div>
     </div>
 </footer>
@@ -50,13 +50,15 @@
 
 <!-- Core plugin JavaScript-->
 <script src="<?= base_url('assets/') ?>vendor/jquery-easing/jquery.easing.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
 <!-- Custom scripts for all pages-->
 <script src="<?= base_url('assets/') ?>js/sb-admin-2.min.js"></script>
 
 <!-- data tabel -->
-<script src="<?= base_url('assets/') ?>vendor/datatables/jquery.dataTables.min.js"></script>
-<script src="<?= base_url('assets/') ?>vendor/datatables/dataTables.bootstrap4.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap4.min.js"></script>
 <script src="<?= base_url('assets/') ?>js/demo/datatables-demo.js"></script>
 
 <script>
@@ -88,6 +90,38 @@
         rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
         return prefix == undefined ? rupiah : (rupiah ? 'Rp. ' + rupiah : '');
     }
+</script>
+
+<script>
+    $(document).ready(function() {
+        $('#dataTable').on('submit', 'form', function(e) {
+            // Cek input "Hadir", "Sakit", dan "Mangkir" pada setiap baris
+            var errors = false;
+            $(this).find('input[name^="hadir"], input[name^="sakit"], input[name^="mangkir"]').each(function() {
+                if ($(this).val() === '') {
+                    // Jika ada input kosong, tampilkan pesan error dan beri class "is-invalid"
+                    errors = true;
+                    $(this).addClass('is-invalid');
+                } else {
+                    $(this).removeClass('is-invalid');
+                }
+            });
+
+            if (errors) {
+                // Jika ada error, mencegah form dikirimkan ke server
+                e.preventDefault();
+            }
+        });
+    });
+</script>
+
+<!-- seacrh dropdown -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/js/select2.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#select22').select2();
+    });
 </script>
 </body>
 

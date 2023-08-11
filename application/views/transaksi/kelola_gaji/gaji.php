@@ -1,0 +1,1 @@
+<a href="<?php echo site_url('pinjaman/update_gaji_bulanan'); ?>">Gaji Bulan ini</a>
