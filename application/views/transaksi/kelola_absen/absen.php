@@ -112,7 +112,7 @@
                     </tbody>
                 </table>
                 <?php if (empty($absensi)) : ?>
-                    <div class="alert alert-danger text-center" role="alert">Data tidak ditemukan.</div>
+                    <div class="alert alert-danger text-center" role="alert">Bulan : <?= $bulan; ?> Tahun : <?= $tahun; ?> Data tidak ditemukan.</div>
                 <?php endif; ?>
             </div>
         </div>

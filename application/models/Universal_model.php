@@ -97,7 +97,7 @@ class Universal_model extends CI_Model
         }
     }
 
-    // pinjaman
+    // ********************* pinjaman *********************
     public function updateGajiBulanan()
     {
         // Ambil semua pinjaman yang belum lunas
@@ -114,7 +114,7 @@ class Universal_model extends CI_Model
         }
     }
 
-    // lembur
+    // ********************* lembur *********************
     public function getLembur()
     {
         $this->db->select('*');
@@ -123,5 +123,58 @@ class Universal_model extends CI_Model
         $query = $this->db->get();
 
         return $query->result_array();
+    }
+
+    // **************** GAJI PEGAWAI *********************
+
+    public function joinJabatanPGajiPegawai($bulanTahun)
+    {
+        $this->db->select('pegawai.nip, pegawai.nama, pegawai.jk_pegawai, jabatan.nama_jabatan, jabatan.gaji_pokok, jabatan.tunjangan, absensi.mangkir');
+        $this->db->from('pegawai');
+        $this->db->join('absensi', 'absensi.nip_pegawai = pegawai.nip');
+        $this->db->join('jabatan', 'jabatan.id_jabatan = pegawai.id_jabatan');
+        $this->db->where('absensi.bulan', $bulanTahun);
+        $this->db->order_by('pegawai.nama', 'asc');
+        return $this->db->get()->result_array();
+    }
+
+    public function getPinjamann($nip)
+    {
+        $this->db->select_sum('cicilan');
+        $this->db->from('pinjaman');
+        $this->db->where('nip_pegawai', $nip);
+        $this->db->where('sisa_pinjaman >', 0);
+        return $this->db->get()->row_array()['cicilan'];
+    }
+
+    public function getPotongan($nip)
+    {
+        $this->db->select_sum('mangkir');
+        $this->db->from('absensi');
+        $this->db->where('nip_pegawai', $nip);
+        return $this->db->get()->row_array()['mangkir'];
+    }
+
+    public function getTotalLemburByNIP($nip)
+    {
+        $this->db->select('SUM(lama_lembur * jabatan.lembur) AS total_lembur');
+        $this->db->from('lembur');
+        $this->db->join('jabatan', 'jabatan.id_jabatan = (SELECT id_jabatan FROM pegawai WHERE nip = lembur.nip_pegawai)');
+        $this->db->where('lembur.nip_pegawai', $nip);
+
+        $query = $this->db->get();
+        return $query->row_array()['total_lembur'];
+    }
+
+    public function getTotalGaji($nip)
+    {
+        $this->db->select('jabatan.gaji_pokok, jabatan.tunjangan');
+        $this->db->from('absensi');
+        $this->db->join('pegawai', 'absensi.nip_pegawai = pegawai.nip');
+        $this->db->join('jabatan', 'pegawai.id_jabatan = jabatan.id_jabatan');
+        $this->db->where('absensi.nip_pegawai', $nip);
+
+        $query = $this->db->get();
+        return $query->row_array();
     }
 }

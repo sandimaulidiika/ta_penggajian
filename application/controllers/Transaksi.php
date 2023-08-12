@@ -157,8 +157,38 @@ class Transaksi extends CI_Controller
 
     public function Gaji()
     {
-        $data['user'] = $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array();
         $data['title'] = 'Kelola Gaji';
+        $data['user'] = $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array();
+
+        if ((isset($_POST['bulan']) && $_POST['bulan'] != null) && (isset($_POST['tahun']) && $_POST['tahun'] != null)) {
+            $bulan = $this->input->post('bulan');
+            $tahun = $this->input->post('tahun');
+            $bulanTahun = $bulan . $tahun;
+        } else {
+            $bulan = date('m');
+            $tahun = date('Y');
+            $bulanTahun = $bulan . $tahun;
+        }
+
+        $data['potongan'] = $this->db->get('potongan')->result_array();
+        $data['data_pegawai'] = $this->universal->joinJabatanPGajiPegawai($bulanTahun);
+
+        foreach ($data['data_pegawai'] as &$pegawai) {
+            $pinjaman = $this->universal->getPinjamann($pegawai['nip']);
+            $potongan = $this->universal->getPotongan($pegawai['nip']);
+            $total_lembur = $this->universal->getTotalLemburByNIP($pegawai['nip']);
+            $total_gaji_jabatan = $this->universal->getTotalGaji($pegawai['nip']);
+
+            $total_gaji = $total_gaji_jabatan['gaji_pokok'] + $total_gaji_jabatan['tunjangan'];
+            $total_gaji += $total_lembur; // Tambahkan total lembur
+            $total_gaji -= $pinjaman;
+            // $total_gaji -= $potongan;
+
+            $pegawai['pinjaman'] = $pinjaman;
+            $pegawai['total_lembur'] = $total_lembur;
+            $pegawai['potongan'] = $potongan;
+            $pegawai['total_gaji'] = $total_gaji;
+        }
 
         $this->load->view('templates/header', $data);
         $this->load->view('templates/sidebar', $data);
