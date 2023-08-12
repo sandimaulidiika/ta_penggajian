@@ -56,7 +56,16 @@
                     </select>
                 </div>
                 <button type="submit" class="btn btn-primary mb-2 ml-auto"><i class="fas fa-eye"></i> Tampilkan Data</button>
-                <a href="<?php echo site_url('pinjaman/update_gaji_bulanan'); ?>" class="btn btn-success mb-2 ml-2"><i class="fa-solid fa-money-bill-1-wave"></i> Gaji Bulan ini</a>
+
+                <?php
+                $username = $this->session->userdata('username');
+                $tanggal_klik_gaji = $this->universal->getTanggalKlikGaji($username);
+                $can_click = (strtotime(date('Y-m')) === strtotime(date('Y-m', strtotime($tanggal_klik_gaji))));
+                ?>
+                <a href="<?php echo site_url('pinjaman/update_gaji_bulanan'); ?>" class="btn btn-<?= ($can_click) ? 'success disabled' : 'danger'; ?> mb-2 ml-2">
+                    <i class="fa-solid fa-money-bill-1-wave"></i> Gaji Bulan Ini
+                </a>
+
                 <?php if (empty($data_pegawai)) : ?>
                     <button type="button" class="btn btn-success mb-2 ml-2" data-toggle="modal" data-target="#emptygajiModal"><i class="fas fa-print"></i> Cetak Slip Gaji</button>
                 <?php else : ?>

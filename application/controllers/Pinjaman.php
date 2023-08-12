@@ -83,6 +83,8 @@ class Pinjaman extends CI_Controller
 
     public function update_gaji_bulanan()
     {
+        $username = $this->session->userdata('username');
+        $this->universal->updateTanggalKlikGaji($username);
         $this->universal->updateGajiBulanan();
         set_pesan('Gaji sudah diberikan!');
         redirect('transaksi/gaji');

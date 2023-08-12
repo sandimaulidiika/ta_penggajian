@@ -114,6 +114,26 @@ class Universal_model extends CI_Model
         }
     }
 
+    public function updateTanggalKlikGaji($username)
+    {
+        $data = array(
+            'tanggal_klik_gaji' => date('Y-m-d')
+        );
+
+        $this->db->where('username', $username);
+        $this->db->update('user', $data);
+    }
+
+    public function getTanggalKlikGaji($username)
+    {
+        $this->db->select('tanggal_klik_gaji');
+        $this->db->from('user');
+        $this->db->where('username', $username);
+
+        $query = $this->db->get();
+        return $query->row_array()['tanggal_klik_gaji'];
+    }
+
     // ********************* lembur *********************
     public function getLembur()
     {

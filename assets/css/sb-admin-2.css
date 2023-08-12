@@ -47,6 +47,11 @@
   box-sizing: border-box;
 }
 
+a.disabled {
+  pointer-events: none;
+  color: #ccc;
+}
+
 html {
   font-family: sans-serif;
   line-height: 1.15;
