@@ -37,9 +37,9 @@
                                 <td><?= $key['username'] ?></td>
                                 <th class="text-center">
                                     <?php if ($key['level'] == 'admin') : ?>
-                                        <span class="badge badge-success">admin payroll</span>
+                                        <span class="badge badge-success">Admin Payroll</span>
                                     <?php else : ?>
-                                        <span class="badge badge-warning"><?= $key['level'] ?></span>
+                                        <span class="badge badge-warning">Pimpinan</span>
                                     <?php endif ?>
                                 </th>
                                 <td>
@@ -84,9 +84,8 @@
                                 <label for="level">Level</label>
                                 <select class="form-control" id="level" name="level" aria-label="Default select example">
                                     <option value="admin" <?php if ($key['level'] == "admin") echo "selected"; ?>>Admin Payroll</option>
-                                    <option value="ktu" <?php if ($key['level'] == "pimpinan") echo "selected"; ?>>Pimpinan</option>
+                                    <option value="pimpinan" <?php if ($key['level'] == "pimpinan") echo "selected"; ?>>Pimpinan</option>
                                 </select>
-
                             </div>
                             <div class="form-group">
                                 <label for="password">Password</label>

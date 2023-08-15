@@ -196,4 +196,46 @@ class Transaksi extends CI_Controller
         $this->load->view('transaksi/kelola_gaji/gaji', $data);
         $this->load->view('templates/footer');
     }
+
+    public function cetakslipgaji()
+    {
+        if ((isset($_GET['bulan']) && $_GET['bulan'] != null) && (isset($_GET['tahun']) && $_GET['tahun'] != null)) {
+            $bulan = $_GET['bulan'];
+            $tahun = $_GET['tahun'];
+            $bulanTahun = $bulan . $tahun;
+        } else {
+            $bulan = date('m');
+            $tahun = date('Y');
+            $bulanTahun = $bulan . $tahun;
+        }
+
+        $data['potongan'] = $this->db->get('potongan')->result_array();
+        $data['data_pegawai'] = $this->universal->joinJabatanPGajiPegawai($bulanTahun);
+
+        foreach ($data['data_pegawai'] as &$pegawai) {
+            $pinjaman = $this->universal->getPinjamann($pegawai['nip']);
+            $potongan = $this->universal->getPotongan($pegawai['nip']);
+            $total_lembur = $this->universal->getTotalLemburByNIP($pegawai['nip']);
+            $total_gaji_jabatan = $this->universal->getTotalGaji($pegawai['nip']);
+
+            $total_gaji = $total_gaji_jabatan['gaji_pokok'] + $total_gaji_jabatan['tunjangan'];
+            $total_gaji += $total_lembur; // Tambahkan total lembur
+            $total_gaji -= $pinjaman;
+            // $total_gaji -= $potongan;
+
+            $pegawai['pinjaman'] = $pinjaman;
+            $pegawai['total_lembur'] = $total_lembur;
+            $pegawai['potongan'] = $potongan;
+            $pegawai['total_gaji'] = $total_gaji;
+        }
+
+        // Load PDF Generator Library
+        $this->load->library('pdfgenerator');
+
+        // Load the HTML view
+        $html = $this->load->view('transaksi/kelola_gaji/cetak_slip_gaji', $data, true);
+
+        // Generate PDF using the Pdfgenerator library
+        $this->pdfgenerator->generate($html, 'slip_gaji', 'A4', 'portrait', true);
+    }
 }

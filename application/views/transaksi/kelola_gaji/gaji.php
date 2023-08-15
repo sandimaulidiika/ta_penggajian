@@ -69,7 +69,7 @@
                 <?php if (empty($data_pegawai)) : ?>
                     <button type="button" class="btn btn-success mb-2 ml-2" data-toggle="modal" data-target="#emptygajiModal"><i class="fas fa-print"></i> Cetak Slip Gaji</button>
                 <?php else : ?>
-                    <a href="<?= base_url('transaksi/cetakgaji?bulan=') . $bulan . '&tahun=' . $tahun; ?>" class="btn btn-warning mb-2 ml-2"><i class="fas fa-print"></i> Cetak Slip Gaji</a>
+                    <a target="_blank" href="<?= base_url('transaksi/cetakslipgaji?bulan=') . $bulan . '&tahun=' . $tahun; ?>" class="btn btn-warning mb-2 ml-2"><i class="fas fa-print"></i> Cetak Slip Gaji</a>
                 <?php endif; ?>
             </form>
         </div>
@@ -97,7 +97,7 @@
                             <th>Lembur</th>
                             <th>Potongan</th>
                             <th>Total Gaji</th>
-                            <th>Action</th>
+                            <!-- <th>Action</th> -->
                         </tr>
                     </thead>
                     <tbody>
@@ -118,10 +118,16 @@
                                 <td><?= $key['nama_jabatan']; ?></td>
                                 <td>Rp. <?= number_format($key['gaji_pokok'], 0); ?></td>
                                 <td>Rp. <?= number_format($key['tunjangan'], 0); ?></td>
-                                <td>Rp. <?= number_format($key['total_lembur'], 0); ?></td>
+                                <td>
+                                    <?php if ($key['total_lembur'] !== null) : ?>
+                                        Rp. <?= number_format($key['total_lembur'], 0); ?>
+                                    <?php else : ?>
+                                        Rp. 0
+                                    <?php endif; ?>
+                                </td>
                                 <td>Rp. <?= number_format($potongan, 0); ?></td>
                                 <td>Rp. <?= number_format($total_gaji, 0); ?></td>
-                                <?php if (is_admin()) : ?>
+                                <!-- <?php if (is_admin()) : ?>
                                     <td>
                                         <button class="btn btn-success">
                                             <i class="fas fa-print"></i> Cetak
@@ -129,7 +135,7 @@
                                     </td>
                                 <?php else : ?>
                                     <td></td>
-                                <?php endif ?>
+                                <?php endif ?> -->
                             </tr>
                         <?php endforeach; ?>
                     </tbody>
