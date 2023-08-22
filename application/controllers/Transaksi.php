@@ -259,6 +259,6 @@ class Transaksi extends CI_Controller
         $html = $this->load->view('transaksi/kelola_gaji/cetak_slip_gaji', $data, true);
 
         // Generate PDF using the Pdfgenerator library
-        $this->pdfgenerator->generate($html, 'slip_gaji', 'A4', 'portrait', true);
+        $this->pdfgenerator->generate($html, 'slip_gaji', true);
     }
 }

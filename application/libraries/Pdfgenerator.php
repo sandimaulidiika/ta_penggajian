@@ -6,12 +6,13 @@ use Dompdf\Options;
 
 class Pdfgenerator
 {
-    public function generate($html, $filename = '', $paper = 'A4', $orientation = 'portrait', $stream = TRUE)
+    public function generate($html, $filename = '', $paper = 'A6', $orientation = 'portrait', $stream = TRUE)
     {
         $options = new Options();
         $options->set('chroot', realpath(''));
         $options->set('isRemoteEnabled', TRUE);
-        $dompdf = new Dompdf($options);
+        $options->set('isHtml5ParserEnabled', true);
+        $options->set('isPhpEnabled', true);
         $contxt = stream_context_create([
             'ssl' => [
                 'verify_peer' => FALSE,
@@ -19,6 +20,7 @@ class Pdfgenerator
                 'allow_self_signed' => TRUE
             ]
         ]);
+        $dompdf = new Dompdf($options, $contxt);
         $dompdf->loadHtml($html);
         $dompdf->setPaper($paper, $orientation);
         $dompdf->render();
