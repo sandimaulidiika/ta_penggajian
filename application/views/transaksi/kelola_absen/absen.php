@@ -72,7 +72,7 @@
         </div>
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-bordered table-striped">
+                <table class="table table-bordered table-striped" id="dataTable" width="100%" cellspacing="0">
                     <thead>
                         <tr>
                             <th>No</th>
@@ -111,9 +111,6 @@
                         <?php endforeach; ?>
                     </tbody>
                 </table>
-                <?php if (empty($absensi)) : ?>
-                    <div class="alert alert-danger text-center" role="alert">Bulan : <?= $bulan; ?> Tahun : <?= $tahun; ?> Data tidak ditemukan.</div>
-                <?php endif; ?>
             </div>
         </div>
     </div>

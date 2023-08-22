@@ -20,6 +20,7 @@
                     <thead>
                         <tr>
                             <th>No</th>
+                            <th>Kode Jabatan</th>
                             <th>Nama jabatan</th>
                             <th>Gaji Pokok</th>
                             <th>Tunjangan</th>
@@ -32,16 +33,17 @@
                         <?php foreach ($jabatan as $key) : ?>
                             <tr>
                                 <td><?= $no++ ?></td>
+                                <td><?= $key['kode_jab'] ?></td>
                                 <td><?= $key['nama_jabatan'] ?></td>
                                 <td>Rp. <?= number_format($key['gaji_pokok']); ?></td>
                                 <td>Rp. <?= number_format($key['tunjangan']); ?></td>
                                 <td>Rp. <?= number_format($key['lembur']); ?></td>
                                 <?php if (is_admin()) : ?>
                                     <td>
-                                        <button class="btn btn-primary" data-toggle="modal" data-target="#editModal<?= $key['id_jabatan'] ?>">
+                                        <button class="btn btn-primary" data-toggle="modal" data-target="#editModal<?= $key['kode_jab'] ?>">
                                             <i class="fas fa-edit"></i> Edit
                                         </button>
-                                        <button class="btn btn-danger" data-toggle="modal" data-target="#deleteModal<?= $key['id_jabatan'] ?>">
+                                        <button class="btn btn-danger" data-toggle="modal" data-target="#deleteModal<?= $key['kode_jab'] ?>">
                                             <i class="fas fa-trash-alt"></i> Delete
                                         </button>
                                     </td>
@@ -58,7 +60,7 @@
 
     <!-- edit modal -->
     <?php foreach ($jabatan as $key) : ?>
-        <div class="modal fade" id="editModal<?= $key['id_jabatan'] ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="editModal<?= $key['kode_jab'] ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -69,7 +71,11 @@
                     </div>
                     <form action="<?= site_url('jabatan/edit/') ?>" method="POST">
                         <div class="modal-body">
-                            <input type="hidden" name="id_jabatan" value="<?= $key['id_jabatan'] ?>">
+                            <input type="hidden" name="kode_jab" value="<?= $key['kode_jab'] ?>">
+                            <div class="form-group">
+                                <label for="nama">Kode jabatan</label>
+                                <input type="text" class="form-control" name="kode_jab" value="<?= $key['kode_jab'] ?>" readonly>
+                            </div>
                             <div class="form-group">
                                 <label for="nama">Nama jabatan</label>
                                 <input type="text" class="form-control" name="jabatan" id="jabatan" placeholder="Enter nama jabatan" value="<?= $key['nama_jabatan'] ?>" required>
@@ -99,7 +105,7 @@
 
     <!-- delete Modal-->
     <?php foreach ($jabatan as $key) : ?>
-        <div class="modal fade" id="deleteModal<?= $key['id_jabatan'] ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="deleteModal<?= $key['kode_jab'] ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -111,7 +117,7 @@
                     <div class="modal-body">Yakin ingin menghapus <?= $title ?> <b><?= $key['nama_jabatan'] ?></b></div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
-                        <button onclick="window.location='<?= site_url('jabatan/delete/' . $key['id_jabatan']) ?>'" class="btn btn-danger">Iya, saya yakin</button>
+                        <button onclick="window.location='<?= site_url('jabatan/delete/' . $key['kode_jab']) ?>'" class="btn btn-danger">Iya, saya yakin</button>
                     </div>
                 </div>
             </div>

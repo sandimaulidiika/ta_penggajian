@@ -41,6 +41,9 @@ class Jabatan extends CI_Controller
             'required' => 'Lembur tidak boleh kosong!'
         ]);
 
+        // Mengenerate Kode Jabatan
+        $data['kode_jab'] = $this->universal->generateKodeJabatan();
+
         if ($this->form_validation->run() == false) {
             $this->load->view('templates/header', $data);
             $this->load->view('templates/sidebar', $data);
@@ -50,6 +53,7 @@ class Jabatan extends CI_Controller
         } else {
 
             $data = [
+                'kode_jab' => $this->input->post('kode_jab'),
                 'nama_jabatan' => $this->input->post('jabatan'),
                 'gaji_pokok' => $this->input->post('pokok'),
                 'tunjangan' => $this->input->post('tunjangan'),
@@ -64,23 +68,24 @@ class Jabatan extends CI_Controller
 
     public function edit()
     {
-        $id = $this->input->post('id_jabatan');
+        $id = $this->input->post('kode_jab');
 
         $data = [
+            'kode_jab' => $this->input->post('kode_jab'),
             'nama_jabatan' => $this->input->post('jabatan'),
             'gaji_pokok' => $this->input->post('pokok'),
             'tunjangan' => $this->input->post('tunjangan'),
             'lembur' => $this->input->post('lembur'),
         ];
 
-        $this->universal->update('jabatan', 'id_jabatan', $id, $data);
+        $this->universal->update('jabatan', 'kode_jab', $id, $data);
         set_pesan('Data berhasil diubah!');
         redirect('jabatan');
     }
 
     public function delete($id)
     {
-        $where = array('id_jabatan' => $id);
+        $where = array('kode_jab' => $id);
         $this->db->delete('jabatan', $where);
         set_pesan('delete data berhasil!');
         redirect('jabatan');

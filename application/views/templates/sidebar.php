@@ -71,15 +71,15 @@
     </div> -->
 
     <!-- Nav Item - Pages Collapse Menu -->
-    <li class="nav-item">
+    <li class="nav-item <?= ($this->uri->segment(2) == 'laporan_absen' || $this->uri->segment(2) == 'laporan_gaji') ? 'active' : '' ?>">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
             <i class="fa-solid fa-print"></i>
             <span>Laporan</span>
         </a>
-        <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+        <div id="collapsePages" class="collapse <?= ($this->uri->segment(2) == 'laporan_absen' || $this->uri->segment(2) == 'laporan_gaji') ? 'show' : '' ?>" aria-labelledby="headingPages" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
-                <a class="collapse-item" href="<?= site_url('') ?>">Laporan Absen</a>
-                <a class="collapse-item" href="<?= site_url('') ?>">Laporan Gaji</a>
+                <a class="collapse-item <?= ($this->uri->segment(2) == 'laporan_absen') ? 'active' : '' ?>" href="<?= site_url('laporan/laporan_absen') ?>">Laporan Absen</a>
+                <a class="collapse-item <?= ($this->uri->segment(2) == 'laporan_gaji') ? 'active' : '' ?>" href="<?= site_url('laporan/laporan_gaji') ?>">Laporan Gaji</a>
             </div>
         </div>
     </li>

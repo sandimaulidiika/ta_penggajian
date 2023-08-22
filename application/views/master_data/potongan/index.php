@@ -20,8 +20,12 @@
                     <thead>
                         <tr>
                             <th>No</th>
-                            <th>Jenis Potongan</th>
-                            <th>Harga Potongan</th>
+                            <th>Hadir</th>
+                            <th>Sakit</th>
+                            <th>Mangkir</th>
+                            <th>PPH 21</th>
+                            <th>BPJS KES</th>
+                            <th>BPJS NAKER</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -30,8 +34,12 @@
                         <?php foreach ($potongan as $key) : ?>
                             <tr>
                                 <td><?= $no++ ?></td>
-                                <td><?= $key['potongan'] ?></td>
-                                <td>Rp. <?= number_format($key['jml_potongan']); ?></td>
+                                <td>Rp. <?= number_format($key['hadir'], 0); ?></td>
+                                <td>Rp. <?= number_format($key['sakit'], 0); ?></td>
+                                <td>Rp. <?= number_format($key['mangkir'], 0); ?></td>
+                                <td>Rp. <?= number_format($key['pph21'], 0); ?></td>
+                                <td>Rp. <?= number_format($key['bpjskes'], 0); ?></td>
+                                <td>Rp. <?= number_format($key['bpjsnaker'], 0); ?></td>
                                 <?php if (is_admin()) : ?>
                                     <td>
                                         <button class="btn btn-primary" data-toggle="modal" data-target="#editModal<?= $key['id_potongan'] ?>">

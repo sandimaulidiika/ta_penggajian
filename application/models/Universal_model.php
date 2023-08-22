@@ -32,7 +32,7 @@ class Universal_model extends CI_Model
     {
         $this->db->select('*');
         $this->db->from('pegawai');
-        $this->db->join('jabatan', 'pegawai.id_jabatan = jabatan.id_jabatan');
+        $this->db->join('jabatan', 'pegawai.kode_jab = jabatan.kode_jab');
         $this->db->join('divisi', 'pegawai.id_divisi = divisi.id_divisi');
         $query = $this->db->get();
 
@@ -47,6 +47,32 @@ class Universal_model extends CI_Model
         $query = $this->db->get('pegawai');
 
         return $query->result();
+    }
+
+    // jabatan
+    public function getMax($table, $field, $kode = null)
+    {
+        $this->db->select_max($field);
+        if ($kode != null) {
+            $this->db->like($field, $kode, 'after');
+        }
+        $result = $this->db->get($table)->row_array();
+
+        return isset($result[$field]) ? $result[$field] : null;
+    }
+
+    public function generateKodeJabatan()
+    {
+        $kode_terakhir = $this->getMax('jabatan', 'kode_jab');
+
+        if ($kode_terakhir !== null) {
+            $kode_tambah = intval(substr($kode_terakhir, -2)) + 1;
+        } else {
+            $kode_tambah = 1;
+        }
+
+        $number = str_pad($kode_tambah, 2, '0', STR_PAD_LEFT);
+        return 'JA' . $number;
     }
 
     public function getPinjaman()
@@ -64,7 +90,7 @@ class Universal_model extends CI_Model
         $this->db->select('*');
         $this->db->from('user');
         $this->db->join('pegawai', 'pegawai.id_user = user.id_user');
-        $this->db->join('jabatan', 'jabatan.id_jabatan = pegawai.id_jabatan');
+        $this->db->join('jabatan', 'jabatan.kode_jab = pegawai.kode_jab');
         $this->db->where('user.username', $username);
         return $this->db->get();
     }
@@ -74,7 +100,7 @@ class Universal_model extends CI_Model
         $this->db->select('*');
         $this->db->from('absensi');
         $this->db->join('pegawai', 'pegawai.nip = absensi.nip_pegawai');
-        $this->db->join('jabatan', 'jabatan.id_jabatan = absensi.id_jabatan');
+        $this->db->join('jabatan', 'jabatan.kode_jab = absensi.kode_jab');
         $this->db->where('absensi.bulan', $bulanTahun);
 
         return $this->db->get()->result_array();
@@ -84,7 +110,7 @@ class Universal_model extends CI_Model
     {
         return $this->db->query("
 			SELECT pegawai.*, jabatan.nama_jabatan FROM pegawai 
-			INNER JOIN jabatan ON pegawai.id_jabatan = jabatan.id_jabatan 
+			INNER JOIN jabatan ON pegawai.kode_jab = jabatan.kode_jab 
 			WHERE NOT EXISTS (SELECT * FROM absensi 
 			WHERE bulan = '$bulanTahun' AND pegawai.nip = absensi.nip_pegawai)")->result_array();
     }
@@ -149,14 +175,14 @@ class Universal_model extends CI_Model
 
     public function joinJabatanPGajiPegawai($bulanTahun)
     {
-        $this->db->select('pegawai.nip, pegawai.nama, pegawai.jk_pegawai, jabatan.nama_jabatan, jabatan.gaji_pokok, jabatan.tunjangan, absensi.mangkir');
         $this->db->from('pegawai');
         $this->db->join('absensi', 'absensi.nip_pegawai = pegawai.nip');
-        $this->db->join('jabatan', 'jabatan.id_jabatan = pegawai.id_jabatan');
+        $this->db->join('jabatan', 'jabatan.kode_jab = pegawai.kode_jab');
         $this->db->where('absensi.bulan', $bulanTahun);
         $this->db->order_by('pegawai.nama', 'asc');
         return $this->db->get()->result_array();
     }
+
 
     public function getPinjamann($nip)
     {
@@ -167,7 +193,7 @@ class Universal_model extends CI_Model
         return $this->db->get()->row_array()['cicilan'];
     }
 
-    public function getPotongan($nip)
+    public function getMangkir($nip)
     {
         $this->db->select_sum('mangkir');
         $this->db->from('absensi');
@@ -175,26 +201,46 @@ class Universal_model extends CI_Model
         return $this->db->get()->row_array()['mangkir'];
     }
 
-    public function getTotalLemburByNIP($nip)
+    public function getTotalLemburByNIP($nip, $bulan, $tahun)
     {
-        $this->db->select('SUM(lama_lembur * jabatan.lembur) AS total_lembur');
+        $this->db->select('SUM(lembur.lama_lembur * jabatan.lembur) AS total_lembur');
         $this->db->from('lembur');
-        $this->db->join('jabatan', 'jabatan.id_jabatan = (SELECT id_jabatan FROM pegawai WHERE nip = lembur.nip_pegawai)');
+        $this->db->join('jabatan', 'jabatan.kode_jab = (SELECT kode_jab FROM pegawai WHERE nip = lembur.nip_pegawai)');
         $this->db->where('lembur.nip_pegawai', $nip);
+        $this->db->where('MONTH(lembur.tgl_lembur)', $bulan);
+        $this->db->where('YEAR(lembur.tgl_lembur)', $tahun);
 
         $query = $this->db->get();
         return $query->row_array()['total_lembur'];
     }
+
 
     public function getTotalGaji($nip)
     {
         $this->db->select('jabatan.gaji_pokok, jabatan.tunjangan');
         $this->db->from('absensi');
         $this->db->join('pegawai', 'absensi.nip_pegawai = pegawai.nip');
-        $this->db->join('jabatan', 'pegawai.id_jabatan = jabatan.id_jabatan');
+        $this->db->join('jabatan', 'pegawai.kode_jab = jabatan.kode_jab');
         $this->db->where('absensi.nip_pegawai', $nip);
 
         $query = $this->db->get();
         return $query->row_array();
+    }
+
+    // cetak slip gaji
+    public function cetak_slip($bulanTahun)
+    {
+        $this->db->from('pegawai');
+        $this->db->join('absensi', 'absensi.nip_pegawai = pegawai.nip');
+        $this->db->join('jabatan', 'jabatan.kode_jab = pegawai.kode_jab');
+        $this->db->where('absensi.bulan', $bulanTahun);
+        $this->db->order_by('pegawai.nama', 'asc');
+        return $this->db->get()->result_array();
+    }
+
+    public function getPotonganByTitle($title)
+    {
+        $this->db->where('potongan', $title);
+        return $this->db->get('potongan')->result_array();
     }
 }

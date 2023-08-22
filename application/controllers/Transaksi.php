@@ -57,34 +57,62 @@ class Transaksi extends CI_Controller
         $this->load->view('templates/footer');
     }
 
-    public function aksi_input_absensi()
+    public function aksi_import_absensi()
     {
-        $this->form_validation->set_rules('hadir[]', 'Hadir', 'trim|required|numeric');
+        // Set validation rules
+        $this->form_validation->set_rules('excel_file', 'Excel File', 'callback_validate_excel');
 
         if ($this->form_validation->run() == false) {
-            set_pesan('Data absensi <strong>Gagal ditambahkan!</strong>. Ulangi kembali.', false);
+            set_pesan('File Excel tidak valid atau tidak dipilih.', false);
             redirect('transaksi/input_absensi');
         } else {
-            $post = $this->input->post();
+            $excelFilePath = $_FILES['excel_file']['tmp_name'];
+            $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($excelFilePath);
+            $sheet = $spreadsheet->getActiveSheet();
+
             $data = [];
-            foreach ($post['bulan'] as $key => $value) {
-                if ($post['bulan'][$key] != null || $post['nik'][$key] != null) {
-                    $data[] = [
-                        'bulan' => $post['bulan'][$key],
-                        'nip_pegawai' => $post['nip'][$key],
-                        'jk_absensi' => $post['jk_pegawai'][$key],
-                        'id_jabatan' => $post['id_jabatan'][$key],
-                        'hadir' => $post['hadir'][$key],
-                        'sakit' => $post['sakit'][$key],
-                        'mangkir' => $post['mangkir'][$key]
-                    ];
-                }
+
+            foreach ($sheet->getRowIterator() as $row) {
+                $rowData = $sheet->rangeToArray('B' . $row->getRowIndex() . ':H' . $row->getRowIndex(), null, true, false)[0];
+
+                $data[] = [
+                    'bulan' => $rowData[0],
+                    'nip_pegawai' => $rowData[1],
+                    'jk_absensi' => $rowData[2],
+                    'kode_jab' => $rowData[3],
+                    'hadir' => $rowData[4],
+                    'sakit' => $rowData[5],
+                    'mangkir' => $rowData[6]
+                ];
             }
-            $this->universal->tambah_batch($data);
-            set_pesan('Data absensi <strong>Berhasil ditambahkan!</strong>');
+
+            if (!empty($data)) {
+                $this->universal->tambah_batch($data);
+                set_pesan('Data absensi <strong>Berhasil ditambahkan!</strong>');
+            } else {
+                set_pesan('Tidak ada data untuk diimpor.', false);
+            }
+
             redirect('transaksi/absensi');
         }
     }
+
+    public function validate_excel($str)
+    {
+        if (!empty($_FILES['excel_file']['name'])) {
+            $fileExt = pathinfo($_FILES['excel_file']['name'], PATHINFO_EXTENSION);
+            if ($fileExt == 'xlsx' || $fileExt == 'xls') {
+                return true;
+            } else {
+                $this->form_validation->set_message('validate_excel', 'File harus dalam format Excel (xlsx atau xls).');
+                return false;
+            }
+        } else {
+            $this->form_validation->set_message('validate_excel', 'Pilih file Excel untuk diunggah.');
+            return false;
+        }
+    }
+
 
     public function lembur()
     {
@@ -175,18 +203,17 @@ class Transaksi extends CI_Controller
 
         foreach ($data['data_pegawai'] as &$pegawai) {
             $pinjaman = $this->universal->getPinjamann($pegawai['nip']);
-            $potongan = $this->universal->getPotongan($pegawai['nip']);
-            $total_lembur = $this->universal->getTotalLemburByNIP($pegawai['nip']);
-            $total_gaji_jabatan = $this->universal->getTotalGaji($pegawai['nip']);
+            $mangkir = $this->universal->getMangkir($pegawai['nip']);
+            $total_lembur = $this->universal->getTotalLemburByNIP($pegawai['nip'], $bulan, $tahun);
+            $total_gaji = $this->universal->getTotalGaji($pegawai['nip']);
 
-            $total_gaji = $total_gaji_jabatan['gaji_pokok'] + $total_gaji_jabatan['tunjangan'];
-            $total_gaji += $total_lembur; // Tambahkan total lembur
+            $total_gaji = $total_gaji['gaji_pokok'] + $total_gaji['tunjangan'] + $total_lembur;
             $total_gaji -= $pinjaman;
-            // $total_gaji -= $potongan;
+            $total_gaji -= $mangkir;
 
             $pegawai['pinjaman'] = $pinjaman;
             $pegawai['total_lembur'] = $total_lembur;
-            $pegawai['potongan'] = $potongan;
+            $pegawai['mangkir'] = $mangkir;
             $pegawai['total_gaji'] = $total_gaji;
         }
 
@@ -210,27 +237,23 @@ class Transaksi extends CI_Controller
         }
 
         $data['potongan'] = $this->db->get('potongan')->result_array();
-        $data['data_pegawai'] = $this->universal->joinJabatanPGajiPegawai($bulanTahun);
+        $data['cetak'] = $this->universal->cetak_slip($bulanTahun);
 
-        foreach ($data['data_pegawai'] as &$pegawai) {
+        foreach ($data['cetak'] as &$pegawai) {
             $pinjaman = $this->universal->getPinjamann($pegawai['nip']);
-            $potongan = $this->universal->getPotongan($pegawai['nip']);
-            $total_lembur = $this->universal->getTotalLemburByNIP($pegawai['nip']);
-            $total_gaji_jabatan = $this->universal->getTotalGaji($pegawai['nip']);
+            $mangkir = $this->universal->getMangkir($pegawai['nip']);
+            $total_lembur = $this->universal->getTotalLemburByNIP($pegawai['nip'], $bulan, $tahun);
+            $gaji = $this->universal->getTotalGaji($pegawai['nip']);
 
-            $total_gaji = $total_gaji_jabatan['gaji_pokok'] + $total_gaji_jabatan['tunjangan'];
-            $total_gaji += $total_lembur; // Tambahkan total lembur
-            $total_gaji -= $pinjaman;
-            // $total_gaji -= $potongan;
+            $total_gaji = $gaji['gaji_pokok'] + $gaji['tunjangan'] + $total_lembur;
 
-            $pegawai['pinjaman'] = $pinjaman;
             $pegawai['total_lembur'] = $total_lembur;
-            $pegawai['potongan'] = $potongan;
             $pegawai['total_gaji'] = $total_gaji;
-        }
 
-        // Load PDF Generator Library
-        $this->load->library('pdfgenerator');
+            // potongan
+            $pegawai['pinjaman'] = $pinjaman;
+            $pegawai['mangkir'] = $mangkir;
+        }
 
         // Load the HTML view
         $html = $this->load->view('transaksi/kelola_gaji/cetak_slip_gaji', $data, true);

@@ -63,7 +63,7 @@
                                 <select class="form-control" id="jabatan" name="jabatan" aria-label="Default select example">
                                     <option selected disabled>Pilih jabatan</option>
                                     <?php foreach ($jabatan as $key) : ?>
-                                        <option value="<?= $key['id_jabatan'] ?>"><?= $key['nama_jabatan'] ?></option>
+                                        <option value="<?= $key['kode_jab'] ?>"><?= $key['nama_jabatan'] ?></option>
                                     <?php endforeach ?>
                                 </select>
                                 <?= form_error('jabatan', '<small class="text-danger pl-3">', '</small>'); ?>

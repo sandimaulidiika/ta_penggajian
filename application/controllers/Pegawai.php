@@ -15,9 +15,8 @@ class Pegawai extends CI_Controller
         $data['user'] = $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array();
         $data['title'] = 'Data Pegawai';
         $data['pegawai'] = $this->universal->getPegawai();
-        $data['jabatan'] = $this->db->get('jabatan')->result_array();
-        $data['divisi'] = $this->db->get('divisi')->result_array();
         $data['users'] = $this->db->get('user')->result_array();
+        $data['divisi'] = $this->db->get('divisi')->result_array();
 
         $this->load->view('templates/header', $data);
         $this->load->view('templates/sidebar', $data);
@@ -49,7 +48,7 @@ class Pegawai extends CI_Controller
                 'jk_pegawai' => $this->input->post('jk', true),
                 'status' => $this->input->post('status', true),
                 'agama' => $this->input->post('agama', true),
-                'id_jabatan' => $this->input->post('jabatan', true),
+                'kode_jab' => $this->input->post('jabatan', true),
                 'id_divisi' => $this->input->post('divisi', true),
                 'tgl_masuk' => $this->input->post('tgl_masuk', true),
                 'status_kawin' => $this->input->post('status_kawin', true),
@@ -72,7 +71,7 @@ class Pegawai extends CI_Controller
             'jk_pegawai' => $this->input->post('jk', true),
             'status' => $this->input->post('status', true),
             'agama' => $this->input->post('agama', true),
-            'id_jabatan' => $this->input->post('jabatan', true),
+            'kode_jab' => $this->input->post('jabatan', true),
             'id_divisi' => $this->input->post('divisi', true),
             'tgl_masuk' => $this->input->post('tgl_masuk', true),
             'status_kawin' => $this->input->post('status_kawin', true),

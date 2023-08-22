@@ -67,16 +67,16 @@
                 </a>
 
                 <?php if (empty($data_pegawai)) : ?>
-                    <button type="button" class="btn btn-success mb-2 ml-2" data-toggle="modal" data-target="#emptygajiModal"><i class="fas fa-print"></i> Cetak Slip Gaji</button>
+                    <button type="button" class="btn btn-warning mb-2 ml-2" data-toggle="modal" data-target="#emptygajiModal"><i class="fas fa-print"></i> Cetak Slip Gaji</button>
                 <?php else : ?>
-                    <a target="_blank" href="<?= base_url('transaksi/cetakslipgaji?bulan=') . $bulan . '&tahun=' . $tahun; ?>" class="btn btn-warning mb-2 ml-2"><i class="fas fa-print"></i> Cetak Slip Gaji</a>
+                    <a target="_blank" href="<?= base_url('transaksi/cetakslipgaji?bulan=') . $bulan . '&tahun=' . $tahun; ?>" class="btn btn-success mb-2 ml-2"><i class="fas fa-print"></i> Cetak Slip Gaji</a>
                 <?php endif; ?>
             </form>
         </div>
     </div>
 
     <!-- Info Tanggal & Tahun -->
-    <div class="alert alert-info mt-4" role="alert">Menampilkan Data Kehadiran Pegawai Bulan: <strong><?= $bulan; ?></strong> Tahun: <strong><?= $tahun; ?></strong></div>
+    <div class="alert alert-info mt-4" role="alert">Menampilkan Data Gaji Pegawai Bulan: <strong><?= $bulan; ?></strong> Tahun: <strong><?= $tahun; ?></strong></div>
 
     <div class="card shadow mb-4">
         <div class="card-header py-3">
@@ -84,38 +84,39 @@
         </div>
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-bordered table-striped">
+                <table class="table table-bordered table-striped" id="dataTable" width="100%" cellspacing="0">
                     <thead>
                         <tr>
-                            <th>No</th>
-                            <th>NIP</th>
-                            <th>Nama</th>
-                            <th>Jenis Kelamin</th>
-                            <th>Jabatan</th>
-                            <th>Gaji Pokok</th>
-                            <th>Tunjangan</th>
-                            <th>Lembur</th>
-                            <th>Potongan</th>
-                            <th>Total Gaji</th>
-                            <!-- <th>Action</th> -->
+                            <th rowspan=" 10">No</th>
+                            <th rowspan="10">NIP</th>
+                            <th rowspan="10">Nama</th>
+                            <th rowspan="10">Kode Jab</th>
+                            <th rowspan="10">Gaji Pokok</th>
+                            <th rowspan="10">Tunjangan</th>
+                            <th rowspan="10">Lembur</th>
+                            <th rowspan="1" colspan="2" class="text-center">Potongan</th>
+                            <th rowspan="10">Total Gaji</th>
+                        </tr>
+                        <tr>
+                            <th>Mangkir</th>
+                            <th>Pinjaman</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php foreach ($potongan as $p) { ?>
-                            <?php $mangkir = $p['jml_potongan']; ?>
+                            <?php
+                            $jml_potongan = $p['mangkir']; ?>
                         <?php } ?>
                         <?php $no = 1; ?>
                         <?php foreach ($data_pegawai  as $key) : ?>
                             <?php
-                            $potongan = ($key['potongan'] * $mangkir) + $key['pinjaman'];
-                            $total_gaji = $key['total_lembur'] + $key['gaji_pokok'] + $key['tunjangan'] - $potongan;
+                            $tidakhadir = $key['mangkir'] * $jml_potongan;
                             ?>
                             <tr>
                                 <td><?= $no++; ?></td>
                                 <td><?= $key['nip']; ?></td>
                                 <td><?= $key['nama']; ?></td>
-                                <td><?= $key['jk_pegawai']; ?></td>
-                                <td><?= $key['nama_jabatan']; ?></td>
+                                <td><?= $key['kode_jab']; ?></td>
                                 <td>Rp. <?= number_format($key['gaji_pokok'], 0); ?></td>
                                 <td>Rp. <?= number_format($key['tunjangan'], 0); ?></td>
                                 <td>
@@ -125,24 +126,24 @@
                                         Rp. 0
                                     <?php endif; ?>
                                 </td>
-                                <td>Rp. <?= number_format($potongan, 0); ?></td>
-                                <td>Rp. <?= number_format($total_gaji, 0); ?></td>
-                                <!-- <?php if (is_admin()) : ?>
-                                    <td>
-                                        <button class="btn btn-success">
-                                            <i class="fas fa-print"></i> Cetak
-                                        </button>
-                                    </td>
-                                <?php else : ?>
-                                    <td></td>
-                                <?php endif ?> -->
+                                <td>Rp. <?= number_format($tidakhadir, 0); ?></td>
+                                <td>
+                                    <?php if ($key['pinjaman'] !== null) : ?>
+                                        Rp. <?= number_format($key['pinjaman'], 0); ?>
+                                    <?php else : ?>
+                                        Rp. 0
+                                    <?php endif; ?>
+                                </td>
+                                <td>Rp. <?= number_format($key['total_gaji'], 0); ?></td>
                             </tr>
+                            <?php if (empty($data_pegawai)) : ?>
+                                <tr>
+                                    <td>Bulan : <?= $bulan; ?> Tahun : <?= $tahun; ?> Data Belum Di Inputkan.</td>
+                                </tr>
+                            <?php endif; ?>
                         <?php endforeach; ?>
                     </tbody>
                 </table>
-                <?php if (empty($data_pegawai)) : ?>
-                    <div class="alert alert-danger text-center" role="alert">Bulan : <?= $bulan; ?> Tahun : <?= $tahun; ?> Data Belum Di Inputkan.</div>
-                <?php endif; ?>
             </div>
         </div>
     </div>

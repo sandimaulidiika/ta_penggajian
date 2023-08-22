@@ -118,8 +118,8 @@
                                         <label for="nama">Jabatan</label>
                                         <select class="form-control" name="jabatan" aria-label="Default select example">
                                             <option selected disabled>Pilih jabatan</option>
-                                            <?php foreach ($jabatan as $key) : ?>
-                                                <option <?= $peg['id_jabatan'] == $key['id_jabatan'] ? 'selected' : '' ?> value="<?= $key['id_jabatan']; ?>"><?= $key['nama_jabatan']; ?></option>
+                                            <?php foreach ($pegawai as $key) : ?>
+                                                <option <?= $peg['kode_jab'] == $key['kode_jab'] ? 'selected' : '' ?> value="<?= $key['kode_jab']; ?>"><?= $key['nama_jabatan']; ?></option>
                                             <?php endforeach ?>
                                         </select>
                                     </div>
