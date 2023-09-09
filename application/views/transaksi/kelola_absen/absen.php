@@ -72,7 +72,7 @@
         </div>
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-bordered table-striped" id="dataTable" width="100%" cellspacing="0">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                     <thead>
                         <tr>
                             <th>No</th>
@@ -109,6 +109,11 @@
                                 <?php endif ?>
                             </tr>
                         <?php endforeach; ?>
+                        <!-- <?php if (empty($absensi)) : ?>
+                            <tr>
+                                <td colspan="10" style="background-color: red;" align="center" class="text-white">Bulan : <?= $bulan; ?> Tahun : <?= $tahun; ?> Data Belum Di Inputkan.</td>
+                            </tr>
+                        <?php endif; ?> -->
                     </tbody>
                 </table>
             </div>
@@ -126,9 +131,9 @@
                             <span aria-hidden="true">×</span>
                         </button>
                     </div>
-                    <form action="<?= site_url('transaksi/absensi_edit/') ?>" method="POST">
+                    <form action="<?= site_url('transaksi/edit_absensi/') ?>" method="POST">
                         <div class="modal-body">
-                            <input type="hidden" name="nip" value="<?= $key['nip'] ?>">
+                            <input type="hidden" name="nip_pegawai" value="<?= $key['nip_pegawai'] ?>">
                             <div class="form-group">
                                 <label for="nama">Hadir</label>
                                 <input type="text" class="form-control" name="hadir" id="hadir" placeholder="Enter kehadiran" value="<?= $key['hadir'] ?>" required>

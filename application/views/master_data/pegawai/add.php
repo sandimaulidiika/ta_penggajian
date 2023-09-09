@@ -70,7 +70,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="nama">Divisi</label>
-                                <select class="form-control" id="divisi" name="divisi" aria-label="Default select example">
+                                <select class="form-control" id="select22" name="divisi" aria-label="Default select example">
                                     <option selected disabled>Pilih divisi</option>
                                     <?php foreach ($divisi as $key) : ?>
                                         <option value="<?= $key['id_divisi'] ?>"><?= $key['nama_divisi'] ?></option>

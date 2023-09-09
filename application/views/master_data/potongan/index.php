@@ -4,9 +4,12 @@
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800"><?= $title ?></h1>
-        <button onclick="window.location='<?= site_url('potongan/add') ?>'" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
-            <i class="fa-solid fa-plus text-white-50"></i> Tambah Data
-        </button>
+        <?php if (is_admin()) : ?>
+            <button onclick="window.location='<?= site_url('potongan/add') ?>'" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+                <i class="fa-solid fa-plus text-white-50"></i> Tambah Data
+            </button>
+        <?php else : ?>
+        <?php endif ?>
     </div>
     <?= $this->session->flashdata('message'); ?>
     <!-- Content Row -->
@@ -75,12 +78,28 @@
                         <div class="modal-body">
                             <input type="hidden" name="id_potongan" value="<?= $key['id_potongan'] ?>">
                             <div class="form-group">
-                                <label for="nama">Jenis Potongan</label>
-                                <input type="text" class="form-control" name="potongan" id="potongan" placeholder="Enter jenis potongan" value="<?= $key['potongan'] ?>" required>
+                                <label for="nama">Hadir</label>
+                                <input type="text" class="form-control" name="hadir" id="hadir" placeholder="Enter hadir" value="<?= $key['hadir'] ?>" required>
                             </div>
                             <div class="form-group">
-                                <label for="nama">Harga potongan</label>
-                                <input type="text" class="form-control" name="jml_potongan" placeholder="Enter harga potongan" value="<?= $key['jml_potongan'] ?>" required>
+                                <label for="nama">Sakit</label>
+                                <input type="text" class="form-control" name="sakit" id="sakit" placeholder="Enter sakit" value="<?= $key['sakit'] ?>" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="nama">Mangkir</label>
+                                <input type="text" class="form-control" name="mangkir" id="mangkir" placeholder="Enter mangkir" value="<?= $key['mangkir'] ?>" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="nama">Pph 21</label>
+                                <input type="text" class="form-control" name="pph21" id="pph21" placeholder="Enter pph21" value="<?= $key['pph21'] ?>" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="nama">Bpjs Kes</label>
+                                <input type="text" class="form-control" name="bpjskes" id="bpjskes" placeholder="Enter bpjskes" value="<?= $key['bpjskes'] ?>" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="nama">Bpjs Naker</label>
+                                <input type="text" class="form-control" name="bpjsnaker" id="bpjsnaker" placeholder="Enter bpjsnaker" value="<?= $key['bpjsnaker'] ?>" required>
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -104,7 +123,7 @@
                             <span aria-hidden="true">×</span>
                         </button>
                     </div>
-                    <div class="modal-body">Yakin ingin menghapus <?= $title ?> <b><?= $key['potongan'] ?></b></div>
+                    <div class="modal-body">Yakin ingin menghapus?</div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
                         <button onclick="window.location='<?= site_url('potongan/delete/' . $key['id_potongan']) ?>'" class="btn btn-danger">Iya, saya yakin</button>

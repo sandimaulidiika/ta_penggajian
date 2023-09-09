@@ -44,6 +44,44 @@
     </div>
 </div>
 
+<!-- change password modal -->
+<div class="modal fade" id="changepw" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Ganti Kata Sandi</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <form action="<?= site_url('auth/ganti_kata_sandi/') ?>" method="POST">
+                <div class="modal-body">
+                    <input type="hidden" name="id_divisi" value="">
+                    <div class="form-group">
+                        <label for="nama">Kata Sandi Lama</label>
+                        <input type="password" class="form-control" name="sandi_lama" placeholder="Enter sandi lama">
+                        <?= form_error('sandi_lama', '<small class="text-danger pl-3">', '</small>'); ?>
+                    </div>
+                    <div class="form-group">
+                        <label for="nama">Kata Sandi Baru</label>
+                        <input type="password" class="form-control" name="baru_1" placeholder="Enter kata sandi">
+                        <?= form_error('baru_1', '<small class="text-danger pl-3">', '</small>'); ?>
+                    </div>
+                    <div class="form-group">
+                        <label for="nama">Ulangi Kata Sandi Baru</label>
+                        <input type="password" class="form-control" name="baru_2" placeholder="Enter ulangi kata sandi">
+                        <?= form_error('baru_2', '<small class="text-danger pl-3">', '</small>'); ?>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 <!-- Bootstrap core JavaScript-->
 <script src="<?= base_url('assets/') ?>vendor/jquery/jquery.min.js"></script>
 <script src="<?= base_url('assets/') ?>vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -62,37 +100,6 @@
 <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap4.min.js"></script>
 <script src="<?= base_url('assets/') ?>js/demo/datatables-demo.js"></script>
-
-<script>
-    /* Rupiah Edit*/
-    var tanpa_rupiah = document.getElementById('rupiah-edit');
-    tanpa_rupiah.addEventListener('keyup', function(e) {
-        tanpa_rupiah.value = formatRupiah(this.value);
-    });
-
-    /* Rupiah */
-    var dengan_rupiah = document.getElementById('rupiah');
-    dengan_rupiah.addEventListener('keyup', function(e) {
-        dengan_rupiah.value = formatRupiah(this.value, 'Rp. ');
-    });
-
-    /* Fungsi */
-    function formatRupiah(angka, prefix) {
-        var number_string = angka.replace(/[^,\d]/g, '').toString(),
-            split = number_string.split(','),
-            sisa = split[0].length % 3,
-            rupiah = split[0].substr(0, sisa),
-            ribuan = split[0].substr(sisa).match(/\d{3}/gi);
-
-        if (ribuan) {
-            separator = sisa ? '.' : '';
-            rupiah += separator + ribuan.join('.');
-        }
-
-        rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
-        return prefix == undefined ? rupiah : (rupiah ? 'Rp. ' + rupiah : '');
-    }
-</script>
 
 <script>
     $(document).ready(function() {
@@ -124,6 +131,25 @@
     $(document).ready(function() {
         $('#select22').select2();
     });
+</script>
+
+<!-- sweetalert2 -->
+<script src="https://common.olemiss.edu/_js/sweet-alert/sweet-alert.min.js"></script>
+<script>
+    <?php if ($this->session->flashdata('success')) { ?>
+        var text = <?php echo json_encode($this->session->flashdata('success')) ?>;
+        swal("Good job!", text, "success")
+    <?php } ?>
+
+    <?php if ($this->session->flashdata('danger')) { ?>
+        var text = <?php echo json_encode($this->session->flashdata('danger')) ?>;
+        swal("Failed!", text, "error")
+    <?php } ?>
+
+    <?php if ($this->session->flashdata('error')) { ?>
+        var text = <?php echo json_encode($this->session->flashdata('error')) ?>;
+        swal("Failed!", text, "error")
+    <?php } ?>
 </script>
 </body>
 

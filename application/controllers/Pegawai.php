@@ -17,6 +17,7 @@ class Pegawai extends CI_Controller
         $data['pegawai'] = $this->universal->getPegawai();
         $data['users'] = $this->db->get('user')->result_array();
         $data['divisi'] = $this->db->get('divisi')->result_array();
+        $data['jabatan'] = $this->db->get('jabatan')->result_array();
 
         $this->load->view('templates/header', $data);
         $this->load->view('templates/sidebar', $data);
@@ -27,6 +28,9 @@ class Pegawai extends CI_Controller
 
     public function add()
     {
+        if (!is_admin()) {
+            redirect('dashboard');
+        }
         $data['user'] = $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array();
         $data['title'] = 'Tambah Pegawai';
         $data['jabatan'] = $this->db->get('jabatan')->result_array();
@@ -56,8 +60,12 @@ class Pegawai extends CI_Controller
                 'id_user' => !empty($this->input->post('user', true)) ? $this->input->post('user', true) : 0,
             ];
 
-            $this->universal->insert('pegawai', $data);
-            set_pesan('tambah data pegawai berhasil!');
+            $proses = $this->universal->insert('pegawai', $data);
+            if ($proses) {
+                set_pesan('tambah data pegawai berhasil!');
+            } else {
+                set_pesan('tambah data pegawai gagal!', false);
+            }
             redirect('pegawai');
         }
     }

@@ -25,6 +25,9 @@ class Potongan extends CI_Controller
 
     public function add()
     {
+        if (!is_admin()) {
+            redirect('dashboard');
+        }
         $data['user'] = $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array();
         $data['title'] = 'Tambah Potongan';
         $data['potongan'] = $this->db->get('potongan')->result_array();
@@ -40,8 +43,12 @@ class Potongan extends CI_Controller
             $this->load->view('templates/footer');
         } else {
             $data = [
-                'potongan' => $this->input->post('potongan', true),
-                'jml_potongan' => $this->input->post('jml_potongan', true),
+                'hadir' => $this->input->post('hadir', true),
+                'sakit' => $this->input->post('sakit', true),
+                'mangkir' => $this->input->post('mangkir', true),
+                'pph21' => $this->input->post('pph21', true),
+                'bpjskes' => $this->input->post('bpjskes', true),
+                'bpjsnaker' => $this->input->post('bpjsnaker', true),
             ];
 
             $this->universal->insert('potongan', $data);
@@ -55,8 +62,12 @@ class Potongan extends CI_Controller
         $id = $this->input->post('id_potongan');
 
         $data = [
-            'potongan' => $this->input->post('potongan', true),
-            'jml_potongan' => $this->input->post('jml_potongan', true),
+            'hadir' => $this->input->post('hadir', true),
+            'sakit' => $this->input->post('sakit', true),
+            'mangkir' => $this->input->post('mangkir', true),
+            'pph21' => $this->input->post('pph21', true),
+            'bpjskes' => $this->input->post('bpjskes', true),
+            'bpjsnaker' => $this->input->post('bpjsnaker', true),
         ];
 
         $this->universal->update('potongan', 'id_potongan', $id, $data);

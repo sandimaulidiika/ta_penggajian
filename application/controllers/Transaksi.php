@@ -72,17 +72,24 @@ class Transaksi extends CI_Controller
 
             $data = [];
 
+            $firstRow = true; // Untuk mengidentifikasi baris pertama sebagai judul
+
             foreach ($sheet->getRowIterator() as $row) {
-                $rowData = $sheet->rangeToArray('B' . $row->getRowIndex() . ':H' . $row->getRowIndex(), null, true, false)[0];
+                if ($firstRow) {
+                    $firstRow = false; // Lewati baris pertama
+                    continue;
+                }
+
+                $rowData = $sheet->rangeToArray('A' . $row->getRowIndex() . ':G' . $row->getRowIndex(), null, true, false)[0];
 
                 $data[] = [
-                    'bulan' => $rowData[0],
-                    'nip_pegawai' => $rowData[1],
-                    'jk_absensi' => $rowData[2],
-                    'kode_jab' => $rowData[3],
-                    'hadir' => $rowData[4],
-                    'sakit' => $rowData[5],
-                    'mangkir' => $rowData[6]
+                    'nip_pegawai' => $rowData[0],
+                    'jk_absensi' => $rowData[1],
+                    'kode_jab' => $rowData[2],
+                    'hadir' => $rowData[3],
+                    'sakit' => $rowData[4],
+                    'mangkir' => $rowData[5],
+                    'bulan' => $rowData[6]
                 ];
             }
 
@@ -113,6 +120,20 @@ class Transaksi extends CI_Controller
         }
     }
 
+    public function edit_absensi()
+    {
+        $nip = $this->input->post('nip_pegawai');
+
+        $data = [
+            'hadir' => $this->input->post('hadir'),
+            'sakit' => $this->input->post('sakit'),
+            'mangkir' => $this->input->post('mangkir'),
+        ];
+
+        $this->universal->update('absensi', 'nip_pegawai', $nip, $data);
+        set_pesan('Data berhasil diubah!');
+        redirect('transaksi/absensi');
+    }
 
     public function lembur()
     {
@@ -210,6 +231,7 @@ class Transaksi extends CI_Controller
             $total_gaji = $total_gaji['gaji_pokok'] + $total_gaji['tunjangan'] + $total_lembur;
             $total_gaji -= $pinjaman;
             $total_gaji -= $mangkir;
+
 
             $pegawai['pinjaman'] = $pinjaman;
             $pegawai['total_lembur'] = $total_lembur;

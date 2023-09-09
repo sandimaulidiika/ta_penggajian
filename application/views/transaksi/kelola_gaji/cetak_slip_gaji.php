@@ -127,7 +127,7 @@ if ((isset($_POST['bulan']) && $_POST['bulan'] != null) && (isset($_POST['tahun'
                     <tr class="border">
                         <td class="w-50">No. urut</td>
                         <td style="width: 0%;">:</td>
-                        <td class="w-50 text-end fw-bold"><?= $no++; ?></td>
+                        <td class="w-50 fw-bold"><?= $no++; ?></td>
                     </tr>
                     <tr class="border">
                         <td class="w-50">NIP</td>
@@ -152,15 +152,15 @@ if ((isset($_POST['bulan']) && $_POST['bulan'] != null) && (isset($_POST['tahun'
                     <tr class="border">
                         <td class="w-50">Jumlah HK</td>
                         <td style="width: 0%;">:</td>
-                        <td class="w-50 text-end"><?= $key['hadir']; ?></td>
+                        <td class="w-50 "><?= $key['hadir']; ?></td>
                     </tr>
                     <tr class="border">
                         <td class="w-50">Gaji Pokok</td>
                         <td style="width: 0%;">:</td>
                         <td class="w-50">
                             <div class="d-flex justify-content-between">
-                                <div>Rp</div>
-                                <div><?= number_format($key['gaji_pokok'], 0); ?></div>
+                                <!-- <div>Rp</div> -->
+                                <div>Rp. <?= number_format($key['gaji_pokok'], 0); ?></div>
                             </div>
                         </td>
                     </tr>
@@ -170,11 +170,11 @@ if ((isset($_POST['bulan']) && $_POST['bulan'] != null) && (isset($_POST['tahun'
                         <td class="w-50">
                             <div class="d-flex justify-content-between">
                                 <?php if ($key['total_lembur'] !== null) : ?>
-                                    <div>Rp</div>
-                                    <div><?= number_format($key['total_lembur'], 0); ?></div>
+                                    <!-- <div>Rp</div> -->
+                                    <div>Rp. <?= number_format($key['total_lembur'], 0); ?></div>
                                 <?php else : ?>
-                                    <div>Rp</div>
-                                    <div>-</div>
+                                    <!-- <div>Rp</div> -->
+                                    <div>Rp. -</div>
                                 <?php endif; ?>
                             </div>
                         </td>
@@ -184,8 +184,8 @@ if ((isset($_POST['bulan']) && $_POST['bulan'] != null) && (isset($_POST['tahun'
                         <td style="width: 0%;">:</td>
                         <td class="w-50">
                             <div class="d-flex justify-content-between">
-                                <div>Rp</div>
-                                <div><?= number_format($key['tunjangan'], 0); ?></div>
+                                <!-- <div>Rp</div> -->
+                                <div>Rp. <?= number_format($key['tunjangan'], 0); ?></div>
                             </div>
                         </td>
                     </tr>
@@ -194,8 +194,8 @@ if ((isset($_POST['bulan']) && $_POST['bulan'] != null) && (isset($_POST['tahun'
                         <td style="width: 0%;" class=" fw-bold">:</td>
                         <td class="w-50">
                             <div class="d-flex justify-content-between">
-                                <div class="fw-bold">Rp</div>
-                                <div class="fw-bold"><?= number_format($total_gaji, 0); ?></div>
+                                <!-- <div class="fw-bold">Rp</div> -->
+                                <div class="fw-bold">Rp. <?= number_format($total_gaji, 0); ?></div>
                             </div>
                         </td>
                     </tr>
@@ -209,8 +209,13 @@ if ((isset($_POST['bulan']) && $_POST['bulan'] != null) && (isset($_POST['tahun'
                         <td style="width: 0%;">:</td>
                         <td class="w-50">
                             <div class="d-flex justify-content-between">
-                                <div>Rp</div>
-                                <div><?= number_format($p['pph21'], 0); ?></div>
+                                <?php if ($p['pph21'] !== null) : ?>
+                                    <!-- <div>Rp</div> -->
+                                    <div>Rp. <?= number_format($p['pph21'], 0); ?></div>
+                                <?php else : ?>
+                                    <!-- <div>Rp</div> -->
+                                    <div>Rp. -</div>
+                                <?php endif; ?>
                             </div>
                         </td>
                     </tr>
@@ -219,8 +224,8 @@ if ((isset($_POST['bulan']) && $_POST['bulan'] != null) && (isset($_POST['tahun'
                         <td style="width: 0%;">:</td>
                         <td class="w-50">
                             <div class="d-flex justify-content-between">
-                                <div>Rp</div>
-                                <div><?= number_format($p['bpjskes'], 0); ?></div>
+                                <!-- <div>Rp</div> -->
+                                <div>Rp. <?= number_format($p['bpjskes'], 0); ?></div>
                             </div>
                         </td>
                     </tr>
@@ -229,8 +234,8 @@ if ((isset($_POST['bulan']) && $_POST['bulan'] != null) && (isset($_POST['tahun'
                         <td style="width: 0%;">:</td>
                         <td class="w-50">
                             <div class="d-flex justify-content-between">
-                                <div>Rp</div>
-                                <div><?= number_format($p['bpjsnaker'], 0); ?></div>
+                                <!-- <div>Rp</div> -->
+                                <div>Rp. <?= number_format($p['bpjsnaker'], 0); ?></div>
                             </div>
                         </td>
                     </tr>
@@ -239,8 +244,8 @@ if ((isset($_POST['bulan']) && $_POST['bulan'] != null) && (isset($_POST['tahun'
                         <td style="width: 0%;">:</td>
                         <td class="w-50">
                             <div class="d-flex justify-content-between">
-                                <div>Rp</div>
-                                <div><?= number_format($tidakhadir, 0); ?></div>
+                                <!-- <div>Rp</div> -->
+                                <div>Rp. <?= number_format($tidakhadir, 0); ?></div>
                             </div>
                         </td>
                     </tr>
@@ -250,11 +255,11 @@ if ((isset($_POST['bulan']) && $_POST['bulan'] != null) && (isset($_POST['tahun'
                         <td class="w-50">
                             <div class="d-flex justify-content-between">
                                 <?php if ($key['pinjaman'] !== null) : ?>
-                                    <div>Rp</div>
-                                    <div><?= number_format($key['pinjaman'], 0); ?></div>
+                                    <!-- <div>Rp</div> -->
+                                    <div>Rp. <?= number_format($key['pinjaman'], 0); ?></div>
                                 <?php else : ?>
-                                    <div>Rp</div>
-                                    <div>-</div>
+                                    <!-- <div>Rp</div> -->
+                                    <div>Rp. -</div>
                                 <?php endif; ?>
                             </div>
                         </td>
@@ -264,8 +269,8 @@ if ((isset($_POST['bulan']) && $_POST['bulan'] != null) && (isset($_POST['tahun'
                         <td style="width: 0%;" class=" fw-bold">:</td>
                         <td class="w-50">
                             <div class="d-flex justify-content-between">
-                                <div class="fw-bold">Rp</div>
-                                <div class="fw-bold"> <?= number_format($total_potongan, 0); ?></div>
+                                <!-- <div class="fw-bold"></div> -->
+                                <div class="fw-bold">Rp. <?= number_format($total_potongan, 0); ?></div>
                             </div>
                         </td>
                     </tr>
@@ -284,12 +289,12 @@ if ((isset($_POST['bulan']) && $_POST['bulan'] != null) && (isset($_POST['tahun'
                         <td style="width: 0%;" class=" fw-bold">:</td>
                         <td class="w-50">
                             <div class="d-flex justify-content-between">
-                                <div class="fw-bold">Rp</div>
-                                <div class="fw-bold"><?= number_format($gaji_diterima) ?></div>
+                                <div class="fw-bold">Rp. <?= number_format($gaji_diterima) ?></div>
                             </div>
                         </td>
                     </tr>
                 </table>
+                <div style="page-break-after: always;"></div>
             <?php endforeach; ?>
         </div>
     </div>

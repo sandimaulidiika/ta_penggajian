@@ -4,9 +4,12 @@
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800"><?= $title ?></h1>
-        <button onclick="window.location='<?= site_url('pegawai/add') ?>'" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
-            <i class="fa-solid fa-plus text-white-50"></i> Tambah Data
-        </button>
+        <?php if (is_admin()) : ?>
+            <button onclick="window.location='<?= site_url('pegawai/add') ?>'" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+                <i class="fa-solid fa-plus text-white-50"></i> Tambah Data
+            </button>
+        <?php else : ?>
+        <?php endif ?>
     </div>
     <?= $this->session->flashdata('message'); ?>
     <!-- Content Row -->
@@ -107,6 +110,7 @@
                                         <label for="nama">User</label>
                                         <select class="form-control" name="user" aria-label="Default select example" required>
                                             <option selected disabled>Pilih user</option>
+                                            <option value="0">Not User</option>
                                             <?php foreach ($users as $key) : ?>
                                                 <option <?= $peg['id_user'] == $key['id_user'] ? 'selected' : '' ?> value="<?= $key['id_user']; ?>"><?= $key['username']; ?></option>
                                             <?php endforeach; ?>
@@ -118,7 +122,7 @@
                                         <label for="nama">Jabatan</label>
                                         <select class="form-control" name="jabatan" aria-label="Default select example">
                                             <option selected disabled>Pilih jabatan</option>
-                                            <?php foreach ($pegawai as $key) : ?>
+                                            <?php foreach ($jabatan as $key) : ?>
                                                 <option <?= $peg['kode_jab'] == $key['kode_jab'] ? 'selected' : '' ?> value="<?= $key['kode_jab']; ?>"><?= $key['nama_jabatan']; ?></option>
                                             <?php endforeach ?>
                                         </select>

@@ -77,43 +77,54 @@ if ((isset($_POST['bulan']) && $_POST['bulan'] != null) && (isset($_POST['tahun'
                 <th>Tunjangan</th>
                 <th>Lembur</th>
                 <th>Potongan</th>
-                <th>Total Gaji</th>
+                <th>Gaji Diterima</th>
             </tr>
         </thead>
         <tbody>
-            <?php foreach ($potongan as $p) { ?>
-                <?php $mangkir = $p['jml_potongan']; ?>
+            <?php foreach ($potongan as $pot) { ?>
+                <?php $mangkir = $pot['mangkir']; ?>
             <?php } ?>
             <?php $no = 1; ?>
             <?php foreach ($data_pegawai  as $key) : ?>
                 <?php
-                $potongan = ($key['potongan'] * $mangkir) + $key['pinjaman'];
-                $total_gaji = $key['total_lembur'] + $key['gaji_pokok'] + $key['tunjangan'] - $potongan;
+                $potongan = ($key['mangkir'] * $mangkir) + $key['pinjaman'] + $pot['pph21'] + $pot['bpjskes'] + $pot['bpjsnaker'];
+                $gaji_diterima = ($key['gaji_pokok'] + $key['tunjangan'] + $key['total_lembur']) - $potongan;
                 ?>
                 <tr class="data-row">
                     <td><?= $no++; ?></td>
                     <td><?= $key['nip']; ?></td>
                     <td><?= $key['nama']; ?></td>
                     <td><?= $key['jk_pegawai']; ?></td>
-                    <td><?= $key['nama_jabatan']; ?></td>
-                    <td><?= number_format($key['gaji_pokok'], 0); ?></td>
-                    <td><?= number_format($key['tunjangan'], 0); ?></td>
+                    <td><?= $key['kode_jab']; ?></td>
+                    <td>Rp. <?= number_format($key['gaji_pokok'], 0, ',', '.'); ?></td>
+                    <td>Rp. <?= number_format($key['tunjangan'], 0, ',', '.'); ?></td>
                     <td>
                         <?php if ($key['total_lembur'] !== null) : ?>
-                            <?= number_format($key['total_lembur'], 0); ?>
+                            Rp. <?= number_format($key['total_lembur'], 0, ',', '.'); ?>
                         <?php else : ?>
                             0
                         <?php endif; ?>
                     </td>
-                    <td><?= number_format($potongan, 0); ?></td>
-                    <td><?= number_format($total_gaji, 0); ?></td>
+                    <td>Rp. <?= number_format($potongan, 0, ',', '.'); ?></td>
+                    <td>Rp. <?= number_format($gaji_diterima, 0, ',', '.'); ?></td>
                 </tr>
             <?php endforeach; ?>
+            <?php if (empty($data_pegawai)) : ?>
+                <tr>
+                    <td colspan="10" style="background-color: red;" align="center">Bulan : <?= $bulan; ?> Tahun : <?= $tahun; ?> Absensi Belum Di Inputkan.</td>
+                </tr>
+            <?php endif; ?>
+            <tr>
+                <td colspan="8" align="center" style="background-color: yellow;">Total Gaji</td>
+                <td align="center">Rp. <?= number_format($total_gaji_potongan, 0, ',', '.'); ?></td>
+                <td align="center">Rp. <?= number_format($total_gaji_diterima, 0, ',', '.'); ?></td>
+            </tr>
+            <tr>
+                <td colspan="8" align="center" style="background-color: yellow;">Total Gaji Dikeluarkan</td>
+                <td colspan="2" align="center">Rp. <?= number_format($total_gaji_dikeluarkan, 0, ',', '.'); ?></td>
+            </tr>
         </tbody>
     </table>
-    <?php if (empty($absensi)) : ?>
-        <div class="alert">Data tidak ditemukan.</div>
-    <?php endif; ?>
 </body>
 
 </html>

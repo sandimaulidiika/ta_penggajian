@@ -25,6 +25,9 @@ class Jabatan extends CI_Controller
 
     public function add()
     {
+        if (!is_admin()) {
+            redirect('dashboard');
+        }
         $data['user'] = $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array();
         $data['title'] = 'Tambah Jabatan';
 

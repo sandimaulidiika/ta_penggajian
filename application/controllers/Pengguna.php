@@ -35,7 +35,7 @@ class Pengguna extends CI_Controller
         $this->form_validation->set_rules('username', 'Username', 'trim|required', [
             'required' => 'Username tidak boleh kosong!'
         ]);
-        $this->form_validation->set_rules('password', 'Password', 'required|trim|min_length[3]', [
+        $this->form_validation->set_rules('password', 'Password', 'required|trim|min_length[4]', [
             'required' => 'Password tidak boleh kosong!',
             'min_length' => 'Password terlalu pendek!'
         ]);

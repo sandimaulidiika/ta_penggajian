@@ -28,7 +28,7 @@
                             <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                             Profil
                         </a>
-                        <a class="dropdown-item" href="#">
+                        <a class="dropdown-item" href="javascript:;" data-toggle="modal" data-target="#changepw">
                             <i class="fas fa-lock fa-sm fa-fw mr-2 text-gray-400"></i>
                             Ganti Kata sandi
                         </a>

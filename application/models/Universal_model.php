@@ -34,6 +34,7 @@ class Universal_model extends CI_Model
         $this->db->from('pegawai');
         $this->db->join('jabatan', 'pegawai.kode_jab = jabatan.kode_jab');
         $this->db->join('divisi', 'pegawai.id_divisi = divisi.id_divisi');
+        $this->db->order_by('pegawai.id_divisi', 'DESC'); // Mengurutkan berdasarkan nama pegawai (abjad)
         $query = $this->db->get();
 
         return $query->result_array();

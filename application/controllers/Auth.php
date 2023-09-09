@@ -50,6 +50,43 @@ class Auth extends CI_Controller
         }
     }
 
+    public function ganti_kata_sandi()
+    {
+        $data['user'] = $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array();
+        $data['title'] = 'Change Password';
+
+        $this->form_validation->set_rules('sandi_lama', 'Password Lama', 'required|trim|min_length[3]');
+        $this->form_validation->set_rules('baru_1', 'Password Baru', 'required|trim|min_length[4]|matches[baru_2]');
+        $this->form_validation->set_rules('baru_2', 'Konfirmasi Password', 'required|trim|matches[baru_1]');
+
+        if ($this->form_validation->run() == false) {
+            // redirect jika false
+            redirect('dashboard');
+        } else {
+            $password_lama = $this->input->post('sandi_lama');
+            $password_baru = $this->input->post('baru_1');
+            if (!password_verify($password_lama, $data['user']['password'])) {
+                $this->session->set_flashdata('error', 'Password lama salah!');
+                redirect('dashboard');
+            } else {
+                if ($password_lama == $password_baru) {
+                    $this->session->set_flashdata('danger', 'Password baru tidak boleh sama dengan kata sandi saat ini!');
+                    redirect('dashboard');
+                } else {
+                    // password sudah ok
+                    $password_hash = password_hash($password_baru, PASSWORD_DEFAULT);
+
+                    $this->db->set('password', $password_hash);
+                    $this->db->where('username', $this->session->userdata('username'));
+                    $this->db->update('user');
+
+                    $this->session->set_flashdata('success', 'Berhasil ganti password!');
+                    redirect('dashboard');
+                }
+            }
+        }
+    }
+
     public function logout()
     {
         $this->session->unset_userdata('username');

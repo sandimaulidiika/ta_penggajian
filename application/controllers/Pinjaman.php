@@ -25,6 +25,9 @@ class Pinjaman extends CI_Controller
 
     public function add()
     {
+        if (!is_admin()) {
+            redirect('dashboard');
+        }
         $data['user'] = $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array();
         $data['title'] = 'Tambah pinjaman';
         $data['pegawai'] = $this->universal->get('pegawai');

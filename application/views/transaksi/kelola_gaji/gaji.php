@@ -69,7 +69,7 @@
                 <?php if (empty($data_pegawai)) : ?>
                     <button type="button" class="btn btn-warning mb-2 ml-2" data-toggle="modal" data-target="#emptygajiModal"><i class="fas fa-print"></i> Cetak Slip Gaji</button>
                 <?php else : ?>
-                    <a target="_blank" href="<?= base_url('transaksi/cetakslipgaji?bulan=') . $bulan . '&tahun=' . $tahun; ?>" class="btn btn-success mb-2 ml-2"><i class="fas fa-print"></i> Cetak Slip Gaji</a>
+                    <a target="_blank" href="<?= site_url('transaksi/cetakslipgaji?bulan=') . $bulan . '&tahun=' . $tahun; ?>" class="btn btn-success mb-2 ml-2"><i class="fas fa-print"></i> Cetak Slip Gaji</a>
                 <?php endif; ?>
             </form>
         </div>
@@ -136,12 +136,12 @@
                                 </td>
                                 <td>Rp. <?= number_format($key['total_gaji'], 0); ?></td>
                             </tr>
-                            <?php if (empty($data_pegawai)) : ?>
-                                <tr>
-                                    <td>Bulan : <?= $bulan; ?> Tahun : <?= $tahun; ?> Data Belum Di Inputkan.</td>
-                                </tr>
-                            <?php endif; ?>
                         <?php endforeach; ?>
+                        <?php if (empty($data_pegawai)) : ?>
+                            <tr>
+                                <td colspan="10" style="background-color: red;" align="center" class="text-white">Bulan : <?= $bulan; ?> Tahun : <?= $tahun; ?> Absensi Belum Di Inputkan.</td>
+                            </tr>
+                        <?php endif; ?>
                     </tbody>
                 </table>
             </div>
