@@ -2,7 +2,7 @@
 <div class="container-fluid">
 
     <!-- Page Heading -->
-    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <!-- <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800"><?= $title; ?></h1>
         <?php if (is_admin()) : ?>
             <button onclick="window.location='<?= site_url('pengguna/add') ?>'" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
@@ -10,7 +10,7 @@
             </button>
         <?php else : ?>
         <?php endif ?>
-    </div>
+    </div> -->
 
     <?= $this->session->flashdata('message'); ?>
 
@@ -41,8 +41,10 @@
                                 <th class="text-center">
                                     <?php if ($key['level'] == 'admin') : ?>
                                         <span class="badge badge-success">Admin Payroll</span>
-                                    <?php else : ?>
+                                    <?php elseif ($key['level'] == 'pimpinan') : ?>
                                         <span class="badge badge-warning">Pimpinan</span>
+                                    <?php elseif ($key['level'] == 'pegawai') : ?>
+                                        <span class="badge badge-primary">Pegawai</span>
                                     <?php endif ?>
                                 </th>
                                 <td>
@@ -88,6 +90,7 @@
                                 <select class="form-control" id="level" name="level" aria-label="Default select example">
                                     <option value="admin" <?php if ($key['level'] == "admin") echo "selected"; ?>>Admin Payroll</option>
                                     <option value="pimpinan" <?php if ($key['level'] == "pimpinan") echo "selected"; ?>>Pimpinan</option>
+                                    <option value="pegawai" <?php if ($key['level'] == "pegawai") echo "selected"; ?>>Pegawai</option>
                                 </select>
                             </div>
                             <div class="form-group">

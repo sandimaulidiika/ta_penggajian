@@ -12,7 +12,7 @@ class Laporan extends CI_Controller
 
     public function laporan_absen()
     {
-        $data['user'] = $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array();
+        $data['user'] = $this->db->get_where('user', ['username' => $this->session->username])->row_array();
         $data['title'] = 'Laporan Absensi Pegawai';
 
         $this->load->view('templates/header', $data);
@@ -46,7 +46,7 @@ class Laporan extends CI_Controller
 
     public function laporan_gaji()
     {
-        $data['user'] = $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array();
+        $data['user'] = $this->db->get_where('user', ['username' => $this->session->username])->row_array();
         $data['title'] = 'Laporan Gaji Pegawai';
 
         $this->load->view('templates/header', $data);

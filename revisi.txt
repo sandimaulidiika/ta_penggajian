@@ -1,0 +1,12 @@
+1. tambah data jabatan : pegawai (DONE)
+2. pada login sebagai level pegawai
+ - hanya bisa lihat gaji yang diterima setiap bulan (DONE)
+ - cetak slip gaji dia sendiri (DONE)
+
+
+ 3. revisi TA 
+  - edit database: hilangkan id_user pada tabel pegawai (DONE)
+  - tampilan pengguna tombol tambah hapus
+  - tambahkan alur untuk pegawai
+  - tambahkan class diagram, activity diagram, use case : pegawai
+  - tambahkan tampilan untuk pegawai

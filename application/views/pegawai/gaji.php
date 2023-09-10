@@ -57,19 +57,10 @@
                 </div>
                 <button type="submit" class="btn btn-primary mb-2 ml-auto"><i class="fas fa-eye"></i> Tampilkan Data</button>
 
-                <?php
-                $username = $this->session->username;
-                $tanggal_klik_gaji = $this->universal->getTanggalKlikGaji($username);
-                $can_click = (strtotime(date('Y-m')) === strtotime(date('Y-m', strtotime($tanggal_klik_gaji))));
-                ?>
-                <a href="<?php echo site_url('pinjaman/update_gaji_bulanan'); ?>" class="btn btn-<?= ($can_click) ? 'success disabled' : 'danger'; ?> mb-2 ml-2">
-                    <i class="fa-solid fa-money-bill-1-wave"></i> Gaji Bulan Ini
-                </a>
-
                 <?php if (empty($data_pegawai)) : ?>
                     <button type="button" class="btn btn-warning mb-2 ml-2" data-toggle="modal" data-target="#emptygajiModal"><i class="fas fa-print"></i> Cetak Slip Gaji</button>
                 <?php else : ?>
-                    <a target="_blank" href="<?= site_url('transaksi/cetakslipgaji?bulan=') . $bulan . '&tahun=' . $tahun; ?>" class="btn btn-success mb-2 ml-2"><i class="fas fa-print"></i> Cetak Slip Gaji</a>
+                    <a target="_blank" href="<?= site_url('gaji/cetakslipgaji?bulan=') . $bulan . '&tahun=' . $tahun; ?>" class="btn btn-success mb-2 ml-2"><i class="fas fa-print"></i> Cetak Slip Gaji</a>
                 <?php endif; ?>
             </form>
         </div>
@@ -114,11 +105,23 @@
                             ?>
                             <tr>
                                 <td><?= $no++; ?></td>
-                                <td><?= $key['nip']; ?></td>
+                                <td><?= $key['nip_pegawai']; ?></td>
                                 <td><?= $key['nama']; ?></td>
                                 <td><?= $key['kode_jab']; ?></td>
-                                <td>Rp. <?= number_format($key['gaji_pokok'], 0); ?></td>
-                                <td>Rp. <?= number_format($key['tunjangan'], 0); ?></td>
+                                <td>
+                                    <?php if ($key['gaji_pokok'] !== null) : ?>
+                                        Rp. <?= number_format($key['gaji_pokok'], 0); ?>
+                                    <?php else : ?>
+                                        Rp. 0
+                                    <?php endif; ?>
+                                </td>
+                                <td>
+                                    <?php if ($key['tunjangan'] !== null) : ?>
+                                        Rp. <?= number_format($key['tunjangan'], 0); ?>
+                                    <?php else : ?>
+                                        Rp. 0
+                                    <?php endif; ?>
+                                </td>
                                 <td>
                                     <?php if ($key['total_lembur'] !== null) : ?>
                                         Rp. <?= number_format($key['total_lembur'], 0); ?>

@@ -12,7 +12,7 @@ class Pinjaman extends CI_Controller
 
     public function index()
     {
-        $data['user'] = $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array();
+        $data['user'] = $this->db->get_where('user', ['username' => $this->session->username])->row_array();
         $data['title'] = 'Pinjaman';
         $data['pinjaman'] = $this->universal->getPinjaman();
 
@@ -28,7 +28,7 @@ class Pinjaman extends CI_Controller
         if (!is_admin()) {
             redirect('dashboard');
         }
-        $data['user'] = $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array();
+        $data['user'] = $this->db->get_where('user', ['username' => $this->session->username])->row_array();
         $data['title'] = 'Tambah pinjaman';
         $data['pegawai'] = $this->universal->get('pegawai');
 
@@ -86,7 +86,7 @@ class Pinjaman extends CI_Controller
 
     public function update_gaji_bulanan()
     {
-        $username = $this->session->userdata('username');
+        $username = $this->session->username;
         $this->universal->updateTanggalKlikGaji($username);
         $this->universal->updateGajiBulanan();
         set_pesan('Gaji sudah diberikan!');

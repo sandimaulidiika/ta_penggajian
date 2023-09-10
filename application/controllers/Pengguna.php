@@ -14,7 +14,7 @@ class Pengguna extends CI_Controller
 
     public function index()
     {
-        $data['user'] = $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array();
+        $data['user'] = $this->db->get_where('user', ['username' => $this->session->username])->row_array();
         $data['title'] = 'Data Pengguna';
         $data['pengguna'] = $this->db->get('user')->result_array();
         $this->load->view('templates/header', $data);
@@ -26,7 +26,7 @@ class Pengguna extends CI_Controller
 
     public function add()
     {
-        $data['user'] = $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array();
+        $data['user'] = $this->db->get_where('user', ['username' => $this->session->username])->row_array();
         $data['title'] = 'Tambah Pengguna';
 
         $this->form_validation->set_rules('nama', 'Nama', 'trim|required', [

@@ -12,7 +12,7 @@ class Jabatan extends CI_Controller
 
     public function index()
     {
-        $data['user'] = $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array();
+        $data['user'] = $this->db->get_where('user', ['username' => $this->session->username])->row_array();
         $data['title'] = 'Data Jabatan';
         $data['jabatan'] = $this->universal->get('jabatan');
 
@@ -28,7 +28,7 @@ class Jabatan extends CI_Controller
         if (!is_admin()) {
             redirect('dashboard');
         }
-        $data['user'] = $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array();
+        $data['user'] = $this->db->get_where('user', ['username' => $this->session->username])->row_array();
         $data['title'] = 'Tambah Jabatan';
 
         $this->form_validation->set_rules('jabatan', 'Nama Jabatan', 'trim|required', [

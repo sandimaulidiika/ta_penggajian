@@ -90,8 +90,9 @@ class Universal_model extends CI_Model
     {
         $this->db->select('*');
         $this->db->from('user');
-        $this->db->join('pegawai', 'pegawai.id_user = user.id_user');
+        $this->db->join('pegawai', 'pegawai.nip = user.username');
         $this->db->join('jabatan', 'jabatan.kode_jab = pegawai.kode_jab');
+        $this->db->join('divisi', 'pegawai.id_divisi = divisi.id_divisi');
         $this->db->where('user.username', $username);
         return $this->db->get();
     }
@@ -178,12 +179,11 @@ class Universal_model extends CI_Model
     {
         $this->db->from('pegawai');
         $this->db->join('absensi', 'absensi.nip_pegawai = pegawai.nip');
-        $this->db->join('jabatan', 'jabatan.kode_jab = pegawai.kode_jab');
+        $this->db->join('jabatan', 'jabatan.kode_jab = absensi.kode_jab');
         $this->db->where('absensi.bulan', $bulanTahun);
         $this->db->order_by('pegawai.nama', 'asc');
         return $this->db->get()->result_array();
     }
-
 
     public function getPinjamann($nip)
     {
@@ -215,8 +215,73 @@ class Universal_model extends CI_Model
         return $query->row_array()['total_lembur'];
     }
 
-
     public function getTotalGaji($nip)
+    {
+        $this->db->select('jabatan.gaji_pokok, jabatan.tunjangan');
+        $this->db->from('absensi');
+        $this->db->join('pegawai', 'absensi.nip_pegawai = pegawai.nip');
+        $this->db->join('jabatan', 'pegawai.kode_jab = jabatan.kode_jab');
+        $this->db->where('absensi.nip_pegawai', $nip);
+
+        $query = $this->db->get();
+        return $query->row_array();
+    }
+
+    // **************** GAJI USER PEGAWAI *********************
+
+    public function userGajiPegawai($bulanTahun)
+    {
+        $nipOrUsername = $this->session->level == 'pegawai' ?
+            $this->session->username :
+            $this->session->UserID;
+
+        $this->db->select('*');
+        $this->db->from('pegawai');
+        $this->db->join('absensi', 'absensi.nip_pegawai = pegawai.nip');
+        $this->db->join('jabatan', 'jabatan.kode_jab = pegawai.kode_jab');
+        $this->db->where('absensi.bulan', $bulanTahun);
+
+        // Tambahkan kondisi untuk memfilter data berdasarkan NIP atau username
+        if ($this->session->level == 'pegawai') {
+            $this->db->where('pegawai.nip', $nipOrUsername);
+        } else {
+            $this->db->where('user.username', $nipOrUsername);
+        }
+
+        return $this->db->get()->result_array();
+    }
+
+    public function pinjamanUser($nip)
+    {
+        $this->db->select_sum('cicilan');
+        $this->db->from('pinjaman');
+        $this->db->where('nip_pegawai', $nip);
+        $this->db->where('sisa_pinjaman >', 0);
+        return $this->db->get()->row_array()['cicilan'];
+    }
+
+    public function userMangkir($nip)
+    {
+        $this->db->select_sum('mangkir');
+        $this->db->from('absensi');
+        $this->db->where('nip_pegawai', $nip);
+        return $this->db->get()->row_array()['mangkir'];
+    }
+
+    public function totalLemburByNIP($nip, $bulan, $tahun)
+    {
+        $this->db->select('SUM(lembur.lama_lembur * jabatan.lembur) AS total_lembur');
+        $this->db->from('lembur');
+        $this->db->join('jabatan', 'jabatan.kode_jab = (SELECT kode_jab FROM pegawai WHERE nip = lembur.nip_pegawai)');
+        $this->db->where('lembur.nip_pegawai', $nip);
+        $this->db->where('MONTH(lembur.tgl_lembur)', $bulan);
+        $this->db->where('YEAR(lembur.tgl_lembur)', $tahun);
+
+        $query = $this->db->get();
+        return $query->row_array()['total_lembur'];
+    }
+
+    public function userTotalGaji($nip)
     {
         $this->db->select('jabatan.gaji_pokok, jabatan.tunjangan');
         $this->db->from('absensi');
@@ -243,5 +308,28 @@ class Universal_model extends CI_Model
     {
         $this->db->where('potongan', $title);
         return $this->db->get('potongan')->result_array();
+    }
+
+    // cetak slip gaji user
+    public function cetak_slip_user($bulanTahun)
+    {
+        $nipOrUsername = $this->session->level == 'pegawai' ?
+            $this->session->username :
+            $this->session->UserID;
+
+        $this->db->select('*');
+        $this->db->from('pegawai');
+        $this->db->join('absensi', 'absensi.nip_pegawai = pegawai.nip');
+        $this->db->join('jabatan', 'jabatan.kode_jab = pegawai.kode_jab');
+        $this->db->where('absensi.bulan', $bulanTahun);
+
+        // Tambahkan kondisi untuk memfilter data berdasarkan NIP atau username
+        if ($this->session->level == 'pegawai') {
+            $this->db->where('pegawai.nip', $nipOrUsername);
+        } else {
+            $this->db->where('user.username', $nipOrUsername);
+        }
+
+        return $this->db->get()->result_array();
     }
 }

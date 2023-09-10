@@ -48,13 +48,8 @@
                                 <?= form_error('agama', '<small class="text-danger pl-3">', '</small>'); ?>
                             </div>
                             <div class="form-group">
-                                <label for="nama">User <i>(Opsional)</i></label>
-                                <select class="form-control" id="user" name="user" aria-label="Default select example">
-                                    <option selected disabled>Pilih user</option>
-                                    <?php foreach ($users as $j) : ?>
-                                        <option value="<?= $j['id_user']; ?>"><?= $j['username']; ?></option>
-                                    <?php endforeach; ?>
-                                </select>
+                                <label for="nama">Password User</label>
+                                <input type="password" class="form-control" name="password" id="password" placeholder="Enter password" required>
                             </div>
                         </div>
                         <div class="col-6">

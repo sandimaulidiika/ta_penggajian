@@ -12,7 +12,7 @@ class User extends CI_Controller
 
     public function profile()
     {
-        $data['user'] = $this->Universal_model->getUserPegawai($this->session->userdata('username'))->row_array();
+        $data['user'] = $this->Universal_model->getUserPegawai($this->session->username)->row_array();
         $data['title'] = 'Profile';
 
         $this->load->view('user/profile', $data);

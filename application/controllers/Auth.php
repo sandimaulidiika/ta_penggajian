@@ -5,7 +5,7 @@ class Auth extends CI_Controller
 {
     public function index()
     {
-        if ($this->session->userdata('username')) {
+        if ($this->session->username) {
             redirect('dashboard');
         }
 
@@ -52,7 +52,7 @@ class Auth extends CI_Controller
 
     public function ganti_kata_sandi()
     {
-        $data['user'] = $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array();
+        $data['user'] = $this->db->get_where('user', ['username' => $this->session->username])->row_array();
         $data['title'] = 'Change Password';
 
         $this->form_validation->set_rules('sandi_lama', 'Password Lama', 'required|trim|min_length[3]');
@@ -77,7 +77,7 @@ class Auth extends CI_Controller
                     $password_hash = password_hash($password_baru, PASSWORD_DEFAULT);
 
                     $this->db->set('password', $password_hash);
-                    $this->db->where('username', $this->session->userdata('username'));
+                    $this->db->where('username', $this->session->username);
                     $this->db->update('user');
 
                     $this->session->set_flashdata('success', 'Berhasil ganti password!');

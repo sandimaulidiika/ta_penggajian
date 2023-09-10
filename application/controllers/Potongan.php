@@ -12,7 +12,7 @@ class Potongan extends CI_Controller
 
     public function index()
     {
-        $data['user'] = $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array();
+        $data['user'] = $this->db->get_where('user', ['username' => $this->session->username])->row_array();
         $data['title'] = 'Potongan Gaji';
         $data['potongan'] = $this->db->get('potongan')->result_array();
 
@@ -28,7 +28,7 @@ class Potongan extends CI_Controller
         if (!is_admin()) {
             redirect('dashboard');
         }
-        $data['user'] = $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array();
+        $data['user'] = $this->db->get_where('user', ['username' => $this->session->username])->row_array();
         $data['title'] = 'Tambah Potongan';
         $data['potongan'] = $this->db->get('potongan')->result_array();
 
